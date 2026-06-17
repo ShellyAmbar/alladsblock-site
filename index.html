@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AllAdsBlock — Block ads, trackers, and malicious sites</title>
+<meta name="description" content="AllAdsBlock is a Chrome extension that blocks ads, pop-ups, video ads, trackers, and known phishing/malware sites. Free, Pro, and Ultimate plans.">
+<style>
+  :root { --bg:#0f0f23; --card:#1a1a2e; --line:#2e2e4e; --red:#e02020; --green:#22c55e; --muted:#9ca3af; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:#fff; line-height:1.6; }
+  a { color:#60a5fa; text-decoration:none; } a:hover { text-decoration:underline; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 20px; }
+  header { padding:18px 0; border-bottom:1px solid var(--line); }
+  header .wrap { display:flex; align-items:center; justify-content:space-between; }
+  .brand { font-weight:800; font-size:18px; }
+  nav a { color:var(--muted); margin-left:18px; font-size:14px; }
+  .hero { text-align:center; padding:64px 0 40px; }
+  .hero h1 { font-size:38px; font-weight:800; line-height:1.15; margin-bottom:16px; }
+  .hero p { font-size:18px; color:var(--muted); max-width:620px; margin:0 auto 28px; }
+  .btn { display:inline-block; background:var(--red); color:#fff; font-weight:700; padding:13px 26px; border-radius:10px; }
+  .btn:hover { background:#b91c1c; text-decoration:none; }
+  section { padding:44px 0; border-top:1px solid var(--line); }
+  h2 { font-size:24px; margin-bottom:18px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .card h3 { font-size:16px; margin-bottom:6px; }
+  .card p { color:var(--muted); font-size:14px; }
+  .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; }
+  .plan { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; }
+  .plan.featured { border-color:var(--red); }
+  .plan .price { font-size:30px; font-weight:800; margin:8px 0; }
+  .plan .per { font-size:13px; color:var(--muted); font-weight:400; }
+  .plan ul { list-style:none; margin-top:12px; }
+  .plan li { font-size:14px; color:#d1d5db; padding:3px 0; }
+  .plan li::before { content:"✓ "; color:var(--green); font-weight:700; }
+  .biz { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; font-size:14px; color:#d1d5db; }
+  footer { border-top:1px solid var(--line); padding:26px 0; color:var(--muted); font-size:13px; text-align:center; }
+  footer a { color:var(--muted); margin:0 8px; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand">🛡️ AllAdsBlock</div>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="#support">Support</a>
+  </nav>
+</div></header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>A cleaner, safer web — in one click.</h1>
+    <p>AllAdsBlock removes ads, pop-ups, and video ads, blocks trackers, and stops known phishing and malware sites before they load. No accounts, no data harvesting.</p>
+    <a class="btn" href="https://chrome.google.com/webstore" target="_blank" rel="noopener">Add to Chrome</a>
+  </div>
+
+  <section id="features">
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="card"><h3>🚫 Block ads &amp; pop-ups</h3><p>Banner ads, pop-ups, pop-unders, and video (VAST/VMAP) ads across the web — including stubborn anti-adblock sites.</p></div>
+      <div class="card"><h3>🔒 Stop trackers</h3><p>Blocks Google Analytics, Facebook Pixel, and dozens of analytics and ad-exchange trackers; strips tracking parameters from links.</p></div>
+      <div class="card"><h3>🛡️ Block dangerous sites</h3><p>Known phishing and malware domains are blocked using live threat feeds (URLhaus &amp; OpenPhish), with a full-page safety warning.</p></div>
+      <div class="card"><h3>🔑 Protect your logins</h3><p>Warns and blocks when a password would be sent over insecure HTTP or to a different domain, and flags brand-impersonation lookalikes.</p></div>
+      <div class="card"><h3>🕵️ Anti-fingerprinting</h3><p>Canvas-noise and plugin masking reduce how easily sites can fingerprint and track you across the web.</p></div>
+      <div class="card"><h3>⛏️ Block cryptominers</h3><p>Stops in-browser cryptomining scripts that silently drain your CPU and battery.</p></div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Plans &amp; pricing</h2>
+    <p style="color:var(--muted);margin-bottom:18px;">Billed via LemonSqueezy. Cancel any time. 30-day money-back guarantee — see our <a href="refund.html">Refund Policy</a>.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <div class="price">$0</div>
+        <ul>
+          <li>Ad, pop-up &amp; video-ad blocking</li>
+          <li>Pop-up &amp; redirect protection</li>
+          <li>Phishing &amp; malware site blocking</li>
+        </ul>
+      </div>
+      <div class="plan featured">
+        <h3>Pro</h3>
+        <div class="price">$2.99<span class="per">/mo</span></div>
+        <ul>
+          <li>Everything in Free</li>
+          <li>YouTube ad skipping</li>
+          <li>Tracker &amp; analytics blocking</li>
+          <li>Cookie-banner auto-dismiss</li>
+          <li>Credential / insecure-form protection</li>
+        </ul>
+      </div>
+      <div class="plan">
+        <h3>Ultimate</h3>
+        <div class="price">$5.99<span class="per">/mo</span></div>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>Anti-fingerprinting</li>
+          <li>Brand-impersonation &amp; typosquatting detection</li>
+          <li>Clickjacking &amp; clipboard-hijack protection</li>
+          <li>Cryptomining-script blocking</li>
+        </ul>
+      </div>
+    </div>
+    <p style="color:var(--muted);margin-top:14px;font-size:13px;">Yearly billing is discounted to $1.79/mo (Pro) and $3.59/mo (Ultimate).</p>
+  </section>
+
+  <section id="support">
+    <h2>Business &amp; contact</h2>
+    <div class="biz">
+      <p><strong>AllAdsBlock</strong> is operated by <strong>ShellyApps</strong> (Israel).</p>
+      <p>Support &amp; billing questions: <a href="mailto:ambarshely@gmail.com">ambarshely@gmail.com</a></p>
+      <p style="margin-top:8px;">We reply to support requests within 2 business days.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  © 2026 AllAdsBlock / ShellyApps.
+  <div style="margin-top:8px;">
+    <a href="index.html">Home</a> ·
+    <a href="#pricing">Pricing</a> ·
+    <a href="privacy.html">Privacy</a> ·
+    <a href="terms.html">Terms</a> ·
+    <a href="refund.html">Refunds</a> ·
+    <a href="#support">Support</a>
+  </div>
+</footer>
+</body>
+</html>
