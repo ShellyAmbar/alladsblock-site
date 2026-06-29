@@ -15,7 +15,7 @@
 <body><div class="wrap">
   <p><a class="back" href="index.html">← AllAdsBlock</a></p>
   <h1>Privacy Policy</h1>
-  <p class="muted">Last updated: June 18, 2026. Operated by ShellyApps (Israel).</p>
+  <p class="muted">Last updated: June 30, 2026. Operated by ShellyApps (Israel).</p>
 
   <p style="margin-top:18px;">AllAdsBlock is built to <strong>protect</strong> your privacy, not exploit it. We do not run analytics on you, we do not sell data, and the extension does not transmit your browsing history to us. This policy explains exactly what happens with your data.</p>
 
@@ -27,6 +27,10 @@
     <li><strong>CDN script hashes</strong> (Ultimate plan) — SHA-256 fingerprints of third-party CDN scripts observed on pages you visit, stored locally in <code>chrome.storage.local</code> to detect tampering on future visits. Only the hash is stored — never the script content itself.</li>
     <li><strong>Your allowlist</strong> — sites you've paused protection on.</li>
     <li><strong>License / promo state</strong> — whether you're on Free, Pro, or Ultimate and your key (stored in Chrome <code>storage.sync</code>).</li>
+    <li><strong>Your settings</strong> — the on/off state of every feature you toggle (Stealth Mode options, annoyance filters, and so on), stored in <code>chrome.storage.sync</code>.</li>
+    <li><strong>Custom filter lists &amp; rules</strong> — the list URLs you choose to subscribe to, any rules you write yourself, and your per-site controls (e.g. blocking scripts, fonts, or media on a given site). Stored locally.</li>
+    <li><strong>Tracker preferences</strong> — your per-tracker choices (allow / block / cookies-only) and, if you turn on "learn &amp; block repeat trackers", the third-party domain names observed across the sites you visit. Domain names only — stored locally, never transmitted.</li>
+    <li><strong>Filtering log</strong> (Ultimate) — while you have the filtering-log page open, a temporary in-memory list of requests and how they were handled (URL, type, verdict, and the matching rule). Held in memory only, never written to disk or transmitted, and discarded when the extension restarts.</li>
   </ul>
 
   <h2>2. Information sent off your device</h2>
@@ -34,6 +38,7 @@
     <li><strong>Payments &amp; license validation — LemonSqueezy.</strong> Purchases are processed by our reseller LemonSqueezy (a Merchant of Record). When you activate a paid license, your license key is sent to LemonSqueezy's API to confirm it's valid. We never see or store your card details. See LemonSqueezy's privacy policy at <a href="https://www.lemonsqueezy.com/privacy" target="_blank" rel="noopener">lemonsqueezy.com/privacy</a>.</li>
     <li><strong>Malware/phishing threat feed.</strong> The extension periodically downloads a public malware-domain list from URLhaus (abuse.ch). This is a standard one-way download — <em>no information about you or the sites you visit is sent</em>.</li>
     <li><strong>CDN script integrity checks</strong> (Ultimate plan). When a page loads a script from a public CDN (e.g. unpkg.com, cdnjs.cloudflare.com, jsdelivr.net), the extension downloads a copy of that script to compute its hash and compare it against a locally stored baseline. The request goes directly to the CDN — <em>the CDN server may log your IP address as part of normal server logging</em>, but no information about you or the page you are visiting is sent in the request. We receive nothing from these requests.</li>
+    <li><strong>Custom filter-list subscriptions.</strong> If you subscribe to a filter list by URL, the extension downloads that list from the address <em>you</em> provide and refreshes it about once a day. The request goes directly to that server, which may log your IP address as part of normal server logging — <em>no information about you or the sites you visit is sent</em>.</li>
     <li><strong>Family/promo keys</strong> are verified entirely on your device (offline) and contact no server.</li>
   </ul>
   <p>That is the complete list of network connections the extension makes. There is no analytics, advertising, or tracking SDK of any kind.</p>
@@ -53,19 +58,39 @@
     <li><strong>Anti-fingerprinting.</strong> Adds imperceptible noise to canvas rendering and masks browser plugin lists to make fingerprinting less reliable. No data is collected.</li>
   </ul>
 
-  <h2>4. What we do not collect</h2>
+  <h2>4. Stealth Mode &amp; privacy filtering (Pro / Ultimate)</h2>
+  <p>Pro and Ultimate add network-level privacy controls. These modify or block requests as your browser makes them — entirely on your device, with nothing reported to us. Paused (allowlisted) sites are never affected.</p>
+  <ul>
+    <li><strong>Header protection (Stealth Mode, Pro).</strong> When you enable it, the extension strips or adds HTTP headers on the requests your browser sends: it can remove the <code>Referer</code>, third-party <code>Authorization</code> and <code>Cookie</code>/<code>Set-Cookie</code>, and <code>X-Client-Data</code> headers, and add a <code>DNT: 1</code> (Do Not Track) or <code>Sec-GPC: 1</code> (Global Privacy Control) signal, or send a generic User-Agent. These changes are applied by the browser's declarative-rules engine; header contents are not read by us or sent anywhere.</li>
+    <li><strong>Cookie controls (Stealth Mode, Pro).</strong> Optional self-destructing cookies and a cookie max-age cap use the browser's cookie API to delete cookies on your device — for example, removing cookies for sites you no longer have open. The extension reads cookie metadata (domain, name, expiry) only to decide what to delete; cookie values are never stored or transmitted.</li>
+    <li><strong>Global Privacy Control / Do Not Track.</strong> When enabled, these add a standard privacy signal to the requests your browser sends to websites, asking them not to sell or share your data. This is the one case where the extension adds information to your outgoing requests — by design, to assert your stated preference.</li>
+    <li><strong>Link clean-up.</strong> Rewrites tracking-redirect links (e.g. <code>google.com/url?…</code>) to their real destination directly in the page. Done locally; nothing is sent.</li>
+    <li><strong>Third-party cookie blocking, annoyance &amp; social-widget hiding, and custom filter lists</strong> all act on requests or page elements locally; the data they touch never leaves your device. Subscribed filter lists are downloaded as described in section 2.</li>
+  </ul>
+
+  <h2>5. What we do not collect</h2>
   <p>We do not collect your browsing history, URLs you visit, page contents, form values, keyboard input, clipboard contents, or any personally identifying information. Every security check described above runs locally in your browser and the results stay on your device.</p>
 
-  <h2>5. Permissions</h2>
-  <p>The extension requests broad host access (<code>&lt;all_urls&gt;</code>) because ad, tracker, and threat blocking must work on every site you visit. This access is used solely to apply blocking rules and run on-page protections — not to record or transmit your browsing activity.</p>
+  <h2>6. Permissions</h2>
+  <p>The extension requests broad host access (<code>&lt;all_urls&gt;</code>) because ad, tracker, and threat blocking must work on every site you visit. Each permission is used only to provide the features described above — never to record or transmit your browsing activity:</p>
+  <ul>
+    <li><code>declarativeNetRequest</code> / <code>declarativeNetRequestFeedback</code> — apply blocking, redirect and header rules, and (for the filtering log) report which rule matched a request, on your device.</li>
+    <li><code>webRequest</code> — observe requests to count what's blocked and build the on-device filtering log. Observation only; the extension cannot read request or response bodies.</li>
+    <li><code>cookies</code> — delete cookies on your device for the optional self-destructing-cookie and cookie-expiry features.</li>
+    <li><code>privacy</code> — toggle the browser's WebRTC IP-handling setting to prevent local-IP leaks.</li>
+    <li><code>scripting</code> / <code>tabs</code> — run on-page protections and show per-tab statistics.</li>
+    <li><code>contextMenus</code> — add the right-click "block element" and "open assistant" entries.</li>
+    <li><code>storage</code> — save your settings, rules and license locally (and via Chrome's optional sync).</li>
+    <li><code>alarms</code> — schedule the daily filter-list and threat-feed refreshes.</li>
+  </ul>
 
-  <h2>6. Children</h2>
+  <h2>7. Children</h2>
   <p>AllAdsBlock is not directed to children under 13 and does not knowingly collect data from them.</p>
 
-  <h2>7. Changes</h2>
+  <h2>8. Changes</h2>
   <p>We may update this policy; material changes will be reflected here with a new date. Significant changes will also be noted in the extension's release notes.</p>
 
-  <h2>8. Contact</h2>
+  <h2>9. Contact</h2>
   <p>Questions about privacy: <a href="mailto:ambarshely@gmail.com">ambarshely@gmail.com</a>.</p>
 
   <p style="margin-top:26px;"><a class="back" href="index.html">← Back to home</a> · <a class="back" href="terms.html">Terms</a> · <a class="back" href="refund.html">Refunds</a></p>
