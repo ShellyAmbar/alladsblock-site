@@ -1,568 +1,791 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="canonical" href="https://shellyambar.github.io/alladsblock-site/">
-<link rel="icon" type="image/png" href="icon48.png">
-
-<title>AllAdsBlock — Free Ad Blocker for Chrome | Block Ads, Pop-ups & Video Ads</title>
-<meta name="description" content="AllAdsBlock is a free Chrome extension that blocks ads, video ads, pop-ups, and trackers instantly. Stops malware and phishing sites. No account needed. Install in one click.">
-<meta name="keywords" content="ad blocker, chrome ad blocker, block ads, block video ads, block pop-ups, tracker blocker, chrome extension, free ad blocker, malware blocker">
-<meta name="robots" content="index, follow">
-<meta name="author" content="ShellyApps">
-
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://shellyambar.github.io/alladsblock-site/">
-<meta property="og:title" content="AllAdsBlock — Free Ad Blocker for Chrome">
-<meta property="og:description" content="Block ads, video ads, pop-ups, and trackers with one click. Free Chrome extension. No account needed.">
-<meta property="og:image" content="https://shellyambar.github.io/alladsblock-site/icon128.png">
-<meta property="og:site_name" content="AllAdsBlock">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AllAdsBlock — Free Ad Blocker for Chrome">
-<meta name="twitter:description" content="Block ads, video ads, pop-ups, and trackers with one click. Free Chrome extension. No account needed.">
-<meta name="twitter:image" content="https://shellyambar.github.io/alladsblock-site/icon128.png">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "AllAdsBlock",
-  "operatingSystem": "Chrome",
-  "applicationCategory": "BrowserApplication",
-  "description": "A free Chrome extension that blocks ads, video ads, pop-ups, trackers, and malware sites.",
-  "url": "https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm",
-  "image": "https://shellyambar.github.io/alladsblock-site/icon128.png",
-  "offers": [
-    { "@type": "Offer", "name": "Free",     "price": "0",    "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Pro",      "price": "2.99", "priceCurrency": "USD", "billingIncrement": "month" },
-    { "@type": "Offer", "name": "Ultimate", "price": "5.99", "priceCurrency": "USD", "billingIncrement": "month" }
-  ],
-  "publisher": { "@type": "Organization", "name": "ShellyApps", "email": "ambarshely@gmail.com" }
-}
-</script>
-
-<style>
-:root {
-  --bg:#0f0f23; --card:#1a1a2e; --line:#2e2e4e;
-  --red:#e02020; --green:#22c55e; --muted:#9ca3af; --text:#e5e7eb;
-  --gold:#f59e0b;
-}
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-a { color:#60a5fa; text-decoration:none; } a:hover { text-decoration:underline; }
-.wrap { max-width:960px; margin:0 auto; padding:0 20px; }
-
-/* Header */
-header { padding:14px 0; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:100; }
-header .wrap { display:flex; align-items:center; justify-content:space-between; }
-.brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:18px; color:#fff; text-decoration:none; }
-.brand img { width:28px; height:28px; border-radius:6px; }
-nav a { color:var(--muted); margin-left:18px; font-size:14px; }
-.cta-nav { background:var(--red); color:#fff !important; padding:8px 18px; border-radius:8px; font-weight:700; margin-left:20px; font-size:14px; }
-.cta-nav:hover { background:#b91c1c !important; text-decoration:none !important; }
-
-/* Hero */
-.hero { text-align:center; padding:70px 0 50px; }
-.hero-icon { width:80px; height:80px; margin:0 auto 20px; display:block; filter:drop-shadow(0 0 16px rgba(224,32,32,.8)) drop-shadow(0 0 40px rgba(224,32,32,.4)); }
-.hero .badge { display:inline-block; background:#1e3a5f; color:#60a5fa; font-size:13px; font-weight:600; padding:5px 14px; border-radius:20px; margin-bottom:20px; }
-.hero h1 { font-size:42px; font-weight:800; line-height:1.12; margin-bottom:18px; color:#fff; }
-.hero h1 span { color:var(--red); }
-.hero p { font-size:18px; color:var(--muted); max-width:600px; margin:0 auto 32px; }
-.btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--red); color:#fff; font-weight:700; font-size:16px; padding:15px 32px; border-radius:10px; transition:background .15s; }
-.btn-primary:hover { background:#b91c1c; text-decoration:none; }
-.btn-primary img { width:20px; height:20px; border-radius:4px; }
-.hero-sub { margin-top:16px; font-size:13px; color:var(--muted); }
-.hero-sub span { margin:0 8px; }
-
-/* Stats bar */
-.stats { display:flex; justify-content:center; gap:48px; padding:26px 0; flex-wrap:wrap; }
-.stat-item { text-align:center; }
-.stat-num { font-size:26px; font-weight:800; color:#fff; }
-.stat-lbl { font-size:13px; color:var(--muted); margin-top:2px; }
-
-/* Sections */
-section { padding:52px 0; border-top:1px solid var(--line); }
-h2 { font-size:26px; font-weight:800; margin-bottom:8px; color:#fff; }
-.section-sub { color:var(--muted); margin-bottom:28px; font-size:15px; }
-
-/* Feature grid */
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
-.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
-.card .icon { font-size:22px; margin-bottom:8px; }
-.card h3 { font-size:16px; font-weight:700; margin-bottom:6px; color:#fff; }
-.card p { color:var(--muted); font-size:14px; line-height:1.55; }
-
-/* ── PLAN SELECTOR ── */
-.plan-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
-.plan-tab {
-  flex:1; min-width:120px; padding:12px 16px; border-radius:10px; cursor:pointer;
-  border:2px solid var(--line); background:var(--card); color:var(--muted);
-  font-size:15px; font-weight:700; text-align:center; transition:all .18s; user-select:none;
-}
-.plan-tab:hover { border-color:#4b5563; color:var(--text); }
-.plan-tab.active { color:#fff; }
-.plan-tab[data-plan="free"].active  { border-color:#6b7280; background:#1f2937; color:#fff; }
-.plan-tab[data-plan="pro"].active   { border-color:var(--red); background:#2d0a0a; color:#fff; }
-.plan-tab[data-plan="ultimate"].active { border-color:var(--gold); background:#2d1f00; color:var(--gold); }
-
-.plan-tab .tab-price { font-size:12px; font-weight:400; color:inherit; opacity:.75; margin-top:2px; }
-
-.plan-panel { display:none; }
-.plan-panel.active { display:block; }
-
-.plan-detail {
-  background:var(--card); border:2px solid var(--line); border-radius:14px; padding:28px;
-}
-.plan-detail[data-plan="pro"]      { border-color:var(--red); }
-.plan-detail[data-plan="ultimate"] { border-color:var(--gold); }
-
-.plan-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
-.plan-name { font-size:22px; font-weight:800; color:#fff; }
-.plan-price-block .price { font-size:38px; font-weight:800; color:#fff; line-height:1; }
-.plan-price-block .per { font-size:14px; color:var(--muted); }
-.plan-price-block .yearly { font-size:12px; color:var(--green); margin-top:4px; }
-
-.plan-badge { font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; }
-.badge-free     { background:#1f2937; color:#9ca3af; }
-.badge-pro      { background:#3b0a0a; color:#f87171; }
-.badge-ultimate { background:#2d1f00; color:var(--gold); }
-
-.feature-groups { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
-.feature-group h4 { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
-.feature-list { list-style:none; }
-.feature-list li { font-size:14px; color:#d1d5db; padding:5px 0; display:flex; align-items:flex-start; gap:8px; }
-.feature-list li .check { flex-shrink:0; margin-top:2px; }
-.feature-list li .check.yes  { color:var(--green); }
-.feature-list li .check.gold { color:var(--gold); }
-.feature-list li .check.no   { color:#374151; }
-.feature-list li.dim { color:#4b5563; }
-
-.plan-cta { margin-top:24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-.btn-plan { display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:9px; font-weight:700; font-size:15px; transition:background .15s; }
-.btn-plan:hover { text-decoration:none; }
-.btn-plan.red    { background:var(--red); color:#fff; }
-.btn-plan.red:hover { background:#b91c1c; }
-.btn-plan.gold   { background:var(--gold); color:#000; }
-.btn-plan.gold:hover { background:#d97706; }
-.btn-plan.ghost  { background:transparent; border:1px solid var(--line); color:var(--text); }
-.btn-plan.ghost:hover { background:#1e1e36; }
-.plan-note { font-size:13px; color:var(--muted); }
-
-/* FAQ */
-.faq-list { display:grid; gap:12px; margin-top:8px; }
-.faq-item { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; }
-.faq-item h3 { font-size:15px; font-weight:700; color:#fff; margin-bottom:6px; }
-.faq-item p  { font-size:14px; color:var(--muted); line-height:1.6; }
-
-/* CTA banner */
-.cta-banner { background:var(--card); border:1px solid var(--line); border-radius:14px; text-align:center; padding:44px 24px; margin:52px 0; }
-.cta-banner h2 { margin-bottom:10px; }
-.cta-banner p  { color:var(--muted); margin-bottom:24px; }
-
-/* Footer */
-footer { border-top:1px solid var(--line); padding:28px 0; color:var(--muted); font-size:13px; text-align:center; }
-footer .disclaimer { max-width:720px; margin:0 auto 14px; font-size:12px; color:#6b7280; }
-footer a { color:var(--muted); margin:0 8px; }
-
-@media(max-width:640px) {
-  .hero h1 { font-size:28px; }
-  .stats { gap:24px; }
-  .cta-nav { display:none; }
-  .plan-header { flex-direction:column; align-items:flex-start; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AllAdsBlock — Free Ad, Tracker & Malware Blocker for Chrome</title>
+    <!-- SEO -->
+    <meta name="description" content="AllAdsBlock is a free Chrome ad blocker that removes banner ads, video ads, pop-ups and trackers, and blocks malware & phishing sites before they load. Fast, private, Manifest V3. Add to Chrome free.">
+    <meta name="keywords" content="ad blocker, adblock, Chrome extension, block ads, video ad blocker, YouTube ad blocker, pop-up blocker, tracker blocker, anti-malware, anti-phishing, privacy, Manifest V3">
+    <meta name="author" content="ShellyApps">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#090816">
+    <link rel="canonical" href="https://shellyambar.github.io/alladsblock-site/">
+    <link rel="icon" type="image/png" href="icon48.png">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AllAdsBlock">
+    <meta property="og:title" content="AllAdsBlock — Free Ad, Tracker & Malware Blocker for Chrome">
+    <meta property="og:description" content="Block every ad, pop-up, video ad and tracker — plus malware & phishing sites. Free, private, Manifest V3.">
+    <meta property="og:url" content="https://shellyambar.github.io/alladsblock-site/">
+    <meta property="og:image" content="https://shellyambar.github.io/alladsblock-site/icon128.png">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AllAdsBlock — Free Ad, Tracker & Malware Blocker for Chrome">
+    <meta name="twitter:description" content="Block every ad, pop-up, video ad and tracker — plus malware & phishing sites. Free, private, Manifest V3.">
+    <meta name="twitter:image" content="https://shellyambar.github.io/alladsblock-site/icon128.png">
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AllAdsBlock",
+      "applicationCategory": "BrowserApplication",
+      "operatingSystem": "Chrome",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free Chrome extension that blocks ads, video ads, pop-ups and trackers, and blocks malware & phishing sites.",
+      "url": "https://shellyambar.github.io/alladsblock-site/",
+      "downloadUrl": "https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm",
+      "author": { "@type": "Organization", "name": "ShellyApps" }
+    }
+    </script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for interactive state -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                            950: '#1e1b4b',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'shimmer': 'shimmer 2.5s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { opacity: '0.4', transform: 'scale(1)' },
+                            '100%': { opacity: '0.8', transform: 'scale(1.05)' }
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card {
+            background: rgba(30, 27, 75, 0.45);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(99, 102, 241, 0.18);
+        }
+        .glow-bg {
+            background: radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.2) 0%, rgba(9, 8, 22, 0) 70%);
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #ffffff 0%, #a5b4fc 50%, #ffffff 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+        .extension-panel {
+            background: #141226;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-[#090816] text-slate-100 antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white" x-data="{ currentMainScreen: 'home', cycle: 'yearly', expandedPlan: 'pro', currentPrivacyTab: 'privacy' }">
 
-<header>
-  <div class="wrap">
-    <a class="brand" href="index.html">
-      <img src="icon48.png" alt="AllAdsBlock icon">
-      AllAdsBlock
-    </a>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-      <a href="privacy.html">Privacy</a>
-      <a class="cta-nav" href="https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm" target="_blank" rel="noopener">Add to Chrome</a>
-    </nav>
-  </div>
-</header>
+    <!-- Ambient Background Glows -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-600/15 blur-[160px] rounded-full pointer-events-none -z-10 animate-glow"></div>
 
-<div class="wrap">
-
-  <!-- Hero -->
-  <div class="hero">
-    <img class="hero-icon" src="icon128.png" alt="AllAdsBlock Chrome extension icon">
-    <div class="badge">Free Chrome Extension</div>
-    <h1>Block <span>Every Ad</span> on Every Website.<br>Instantly.</h1>
-    <p>AllAdsBlock removes banner ads, video ads, pop-ups, and trackers — and blocks malware and phishing sites before they load. Works on every website, right out of the box.</p>
-    <a class="btn-primary" href="https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm" target="_blank" rel="noopener">
-      <img src="icon48.png" alt="">
-      Add to Chrome — It's Free
-    </a>
-    <div class="hero-sub">
-      <span>&#x2713; No account needed</span>
-      <span>&#x2713; No data collected</span>
-      <span>&#x2713; Works immediately</span>
-    </div>
-  </div>
-
-</div>
-
-<div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 0;">
-  <div class="wrap">
-    <div class="stats">
-      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Free to start</div></div>
-      <div class="stat-item"><div class="stat-num">0</div><div class="stat-lbl">Data collected</div></div>
-      <div class="stat-item"><div class="stat-num">MV3</div><div class="stat-lbl">Modern &amp; fast</div></div>
-      <div class="stat-item"><div class="stat-num">10+</div><div class="stat-lbl">Security protections</div></div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-
-  <!-- Features -->
-  <section id="features">
-    <h2>Everything you need to browse without ads</h2>
-    <p class="section-sub">One extension handles it all — no configuration required.</p>
-    <div class="grid">
-      <div class="card"><div class="icon">&#x1F6AB;</div><h3>Block Banner &amp; Display Ads</h3><p>Removes ads from news sites, blogs, and every website you visit using comprehensive EasyList filters — thousands of rules. Pages load faster and look cleaner instantly.</p></div>
-      <div class="card"><div class="icon">&#x23ED;&#xFE0F;</div><h3>Skip Video Ads Automatically</h3><p>Blocks and skips video ads on streaming and news sites — including pre-roll and mid-roll ads — without you doing anything.</p></div>
-      <div class="card"><div class="icon">&#x274C;</div><h3>Stop Pop-ups &amp; Redirects</h3><p>Blocks pop-up windows, pop-unders, and malicious redirects that open new tabs or hijack your browser.</p></div>
-      <div class="card"><div class="icon">&#x1F50D;</div><h3>Block Trackers</h3><p>Stops analytics scripts and ad-exchange trackers from following you across the web. Strips tracking parameters from URLs.</p></div>
-      <div class="card"><div class="icon">&#x1F977;</div><h3>Stealth Mode</h3><p>A full privacy suite that strips the data sites use to track you — hide your Referer, remove the X-Client-Data and Authorization headers, block third-party cookies, auto-expire cookies, and send Do&#8209;Not&#8209;Track and Global Privacy Control — all at the network layer.</p></div>
-      <div class="card"><div class="icon">&#x1F4DC;</div><h3>Custom Filter Lists</h3><p>Subscribe to any Adblock-style filter list by URL and it auto-updates every day, on top of the bundled EasyList &amp; EasyPrivacy. Write your own rules in a built-in editor for total control.</p></div>
-      <div class="card"><div class="icon">&#x1F39B;&#xFE0F;</div><h3>Tracker Controls</h3><p>See every tracker grouped by category and company, then decide for each one: allow, block, or allow&#8209;but&#8209;strip&#8209;cookies. Optionally learn and block the trackers that follow you across multiple sites.</p></div>
-      <div class="card"><div class="icon">&#x1F6E1;&#xFE0F;</div><h3>Block Malware &amp; Phishing Sites</h3><p>Known malware domains are blocked before the page loads using a live threat feed. You get a safety warning instead of a dangerous site.</p></div>
-      <div class="card"><div class="icon">&#x1F512;</div><h3>Protect Your Logins</h3><p>Detects when a login form sends your password over insecure HTTP or to a different domain — and warns you before credentials are exposed.</p></div>
-      <div class="card"><div class="icon">&#x1F57A;</div><h3>Block Cryptominers</h3><p>Detects and blocks in-browser cryptocurrency mining scripts that silently drain your CPU and battery.</p></div>
-      <div class="card"><div class="icon">&#x1F9BE;</div><h3>Anti-Fingerprinting</h3><p>Adds noise to canvas rendering and masks plugin lists so sites can't build a unique fingerprint to track you across the web.</p></div>
-      <div class="card"><div class="icon">&#x1F3AF;</div><h3>Block Anything Yourself</h3><p>Click any element on a page to hide it for good. Your custom blocks are saved per-site and re-applied automatically every visit.</p></div>
-      <div class="card"><div class="icon">&#x1F4CA;</div><h3>Activity Dashboard</h3><p>See exactly what's been blocked — every ad, tracker, and threat, with a live timeline. All stored locally on your device, never shared.</p></div>
-    </div>
-  </section>
-
-  <!-- Pricing -->
-  <section id="pricing">
-    <h2>Simple, honest pricing</h2>
-    <p class="section-sub">Click a plan to explore everything it includes.</p>
-
-    <!-- Tab buttons -->
-    <div class="plan-tabs">
-      <div class="plan-tab active" data-plan="free">
-        Free
-        <div class="tab-price">$0 forever</div>
-      </div>
-      <div class="plan-tab" data-plan="pro">
-        Pro
-        <div class="tab-price">$2.99 / mo</div>
-      </div>
-      <div class="plan-tab" data-plan="ultimate">
-        &#x1F451; Ultimate
-        <div class="tab-price">$5.99 / mo</div>
-      </div>
-    </div>
-
-    <!-- Free panel -->
-    <div class="plan-panel active" data-plan="free">
-      <div class="plan-detail" data-plan="free">
-        <div class="plan-header">
-          <div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-              <span class="plan-name">Free</span>
-              <span class="plan-badge badge-free">Always free</span>
+    <!-- Floating Navbar -->
+    <header class="fixed top-4 left-0 right-0 z-50 px-4 max-w-7xl mx-auto">
+        <nav class="glass-card rounded-2xl px-6 py-3 flex items-center justify-between shadow-2xl shadow-indigo-950/65 border border-brand-500/20">
+            <div class="flex items-center gap-3 group cursor-pointer shrink-0 overflow-hidden pr-2" @click="currentMainScreen = 'home'">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 shrink-0">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                </div>
+                <span class="text-lg md:text-xl font-extrabold tracking-tight text-white whitespace-nowrap">
+                    AllAdsBlock
+                </span>
             </div>
-            <div style="color:var(--muted);font-size:14px;">Everything you need to block ads, pop-ups, and malware — no card required.</div>
-          </div>
-          <div class="plan-price-block">
-            <div class="price">$0</div>
-            <div class="per">no credit card</div>
-          </div>
-        </div>
-        <div class="feature-groups">
-          <div class="feature-group">
-            <h4>Ad Blocking</h4>
-            <ul class="feature-list">
-              <li><span class="check yes">&#x2713;</span> Comprehensive ad blocking (EasyList)</li>
-              <li><span class="check yes">&#x2713;</span> Video ad blocking (pre-roll &amp; mid-roll)</li>
-              <li><span class="check yes">&#x2713;</span> Pop-up &amp; pop-under blocking</li>
-              <li><span class="check yes">&#x2713;</span> Malicious redirect blocking</li>
-              <li><span class="check yes">&#x2713;</span> Block any element (picker)</li>
-              <li><span class="check yes">&#x2713;</span> Procedural cosmetic filtering</li>
-              <li><span class="check yes">&#x2713;</span> Custom rules editor</li>
-              <li><span class="check yes">&#x2713;</span> Per-site controls (block scripts/fonts/media)</li>
-              <li><span class="check yes">&#x2713;</span> Activity dashboard</li>
-              <li><span class="check yes">&#x2713;</span> Custom filter list subscriptions</li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Annoyance blocking (pop-ups, widgets, app banners)</span></li>
-            </ul>
-          </div>
-          <div class="feature-group">
-            <h4>Security</h4>
-            <ul class="feature-list">
-              <li><span class="check yes">&#x2713;</span> Malware site blocking (live feed)</li>
-              <li><span class="check yes">&#x2713;</span> Phishing site detection</li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Anti-adblock bypass</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Comprehensive tracker blocking (EasyPrivacy)</span></li>
-            </ul>
-          </div>
-          <div class="feature-group">
-            <h4>Privacy</h4>
-            <ul class="feature-list">
-              <li><span class="check no">&#x2013;</span> <span class="dim">Stealth Mode privacy suite</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Global Privacy Control (GPC)</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Cookie banner auto-dismiss</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Link-tracking unwrap</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Social-widget blocking</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Anti-fingerprinting</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Cryptominer blocking</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Tracker breakdown by category</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Tracker controls (allow / block / cookies)</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Learn &amp; block cross-site trackers</span></li>
-            </ul>
-          </div>
-        </div>
-        <div class="plan-cta">
-          <a class="btn-plan ghost" href="https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm" target="_blank" rel="noopener">Add to Chrome — Free</a>
-          <span class="plan-note">No account. No credit card. Works immediately.</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pro panel -->
-    <div class="plan-panel" data-plan="pro">
-      <div class="plan-detail" data-plan="pro">
-        <div class="plan-header">
-          <div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-              <span class="plan-name">Pro</span>
-              <span class="plan-badge badge-pro">Most Popular</span>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <template x-if="currentMainScreen === 'home'">
+                    <div class="flex items-center gap-8">
+                        <a href="#features" class="hover:text-white transition-colors">Features</a>
+                        <a href="#panel-demo" class="hover:text-white transition-colors">Extension UI</a>
+                        <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                        <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+                        <button @click="currentMainScreen = 'privacy'; currentPrivacyTab = 'privacy'" class="hover:text-brand-400 transition-colors font-medium cursor-pointer bg-transparent border-none text-slate-300 text-sm">Privacy Policy</button>
+                    </div>
+                </template>
+                <template x-if="currentMainScreen === 'privacy'">
+                    <button @click="currentMainScreen = 'home'" class="hover:text-white transition-colors flex items-center gap-2 cursor-pointer bg-transparent border-none text-slate-300 text-sm">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Main Site
+                    </button>
+                </template>
             </div>
-            <div style="color:var(--muted);font-size:14px;">Full ad blocking with tracker protection and privacy essentials.</div>
-          </div>
-          <div class="plan-price-block">
-            <div class="price">$2.99<span style="font-size:18px;font-weight:400;color:var(--muted);">/mo</span></div>
-            <div class="yearly">Save 40% with yearly — $1.79/mo</div>
-          </div>
-        </div>
-        <div class="feature-groups">
-          <div class="feature-group">
-            <h4>Ad Blocking</h4>
-            <ul class="feature-list">
-              <li><span class="check yes">&#x2713;</span> Comprehensive ad blocking (EasyList)</li>
-              <li><span class="check yes">&#x2713;</span> Video ad blocking (pre-roll &amp; mid-roll)</li>
-              <li><span class="check yes">&#x2713;</span> Pop-up &amp; pop-under blocking</li>
-              <li><span class="check yes">&#x2713;</span> Malicious redirect blocking</li>
-              <li><span class="check yes">&#x2713;</span> Anti-adblock bypass</li>
-              <li><span class="check yes">&#x2713;</span> Procedural cosmetic filtering</li>
-              <li><span class="check yes">&#x2713;</span> Custom rules editor</li>
-              <li><span class="check yes">&#x2713;</span> Per-site controls (block scripts/fonts/media)</li>
-              <li><span class="check yes">&#x2713;</span> Annoyance blocking (pop-ups, widgets, app banners)</li>
-              <li><span class="check yes">&#x2713;</span> Custom filter list subscriptions</li>
-            </ul>
-          </div>
-          <div class="feature-group">
-            <h4>Privacy</h4>
-            <ul class="feature-list">
-              <li><span class="check yes">&#x2713;</span> Comprehensive tracker blocking (EasyPrivacy)</li>
-              <li><span class="check yes">&#x2713;</span> Cookie banner auto-dismiss</li>
-              <li><span class="check yes">&#x2713;</span> URL tracking parameter stripping</li>
-              <li><span class="check yes">&#x2713;</span> Stealth Mode privacy suite</li>
-              <li><span class="check yes">&#x2713;</span> Global Privacy Control (GPC)</li>
-              <li><span class="check yes">&#x2713;</span> Link-tracking unwrap</li>
-              <li><span class="check yes">&#x2713;</span> Social-widget blocking</li>
-              <li><span class="check yes">&#x2713;</span> Tracker breakdown by category</li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Anti-fingerprinting</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">WebRTC IP leak protection</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Tracker controls (allow / block / cookies)</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Learn &amp; block cross-site trackers</span></li>
-            </ul>
-          </div>
-          <div class="feature-group">
-            <h4>Security</h4>
-            <ul class="feature-list">
-              <li><span class="check yes">&#x2713;</span> Malware site blocking (live feed)</li>
-              <li><span class="check yes">&#x2713;</span> Phishing site detection</li>
-              <li><span class="check yes">&#x2713;</span> Insecure login form detection</li>
-              <li><span class="check yes">&#x2713;</span> Brand-impersonation detection</li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Clickjacking protection</span></li>
-              <li><span class="check no">&#x2013;</span> <span class="dim">Cryptominer blocking</span></li>
-            </ul>
-          </div>
-        </div>
-        <div class="plan-cta">
-          <a class="btn-plan red" href="https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm" target="_blank" rel="noopener">Get Pro</a>
-          <span class="plan-note">30-day money-back guarantee. Cancel any time.</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ultimate panel -->
-    <div class="plan-panel" data-plan="ultimate">
-      <div class="plan-detail" data-plan="ultimate">
-        <div class="plan-header">
-          <div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-              <span class="plan-name">&#x1F451; Ultimate</span>
-              <span class="plan-badge badge-ultimate">Full Protection</span>
+            <div class="shrink-0 flex items-center gap-3">
+                <template x-if="currentMainScreen === 'home'">
+                    <button @click="currentMainScreen = 'privacy'; currentPrivacyTab = 'privacy'" class="md:hidden px-3 py-2 bg-brand-950/60 border border-brand-500/30 rounded-xl text-xs text-white">Privacy</button>
+                </template>
+                <template x-if="currentMainScreen === 'privacy'">
+                    <button @click="currentMainScreen = 'home'" class="md:hidden px-3 py-2 bg-brand-600 rounded-xl text-xs text-white flex items-center gap-1">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Home
+                    </button>
+                </template>
+                <a href="https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm" target="_blank" class="relative group overflow-hidden rounded-xl p-[1px] inline-block font-semibold text-xs md:text-sm">
+                    <span class="absolute inset-0 bg-gradient-to-r from-brand-500 to-indigo-500 animate-pulse"></span>
+                    <span class="relative px-3 md:px-5 py-2.5 bg-[#090816] rounded-xl flex items-center gap-2 text-white transition-all duration-300 group-hover:bg-opacity-0">
+                        <i data-lucide="chrome" class="w-4 h-4 text-brand-400 group-hover:text-white"></i>
+                        <span class="hidden sm:inline">Add to Chrome — Free</span>
+                        <span class="sm:hidden">Get Free</span>
+                    </span>
+                </a>
             </div>
-            <div style="color:var(--muted);font-size:14px;">Every feature unlocked — maximum privacy, security, and ad blocking.</div>
-          </div>
-          <div class="plan-price-block">
-            <div class="price">$5.99<span style="font-size:18px;font-weight:400;color:var(--muted);">/mo</span></div>
-            <div class="yearly">Save 40% with yearly — $3.59/mo</div>
-          </div>
-        </div>
-        <div class="feature-groups">
-          <div class="feature-group">
-            <h4>Ad Blocking</h4>
-            <ul class="feature-list">
-              <li><span class="check gold">&#x2713;</span> Comprehensive ad blocking (EasyList)</li>
-              <li><span class="check gold">&#x2713;</span> Video ad blocking (pre-roll &amp; mid-roll)</li>
-              <li><span class="check gold">&#x2713;</span> Pop-up &amp; pop-under blocking</li>
-              <li><span class="check gold">&#x2713;</span> Malicious redirect blocking</li>
-              <li><span class="check gold">&#x2713;</span> Anti-adblock bypass</li>
-              <li><span class="check gold">&#x2713;</span> Cryptominer blocking</li>
-              <li><span class="check gold">&#x2713;</span> Procedural cosmetic filtering</li>
-              <li><span class="check gold">&#x2713;</span> Custom rules editor</li>
-              <li><span class="check gold">&#x2713;</span> Per-site controls (block scripts/fonts/media)</li>
-              <li><span class="check gold">&#x2713;</span> Annoyance blocking (pop-ups, widgets, app banners)</li>
-              <li><span class="check gold">&#x2713;</span> Custom filter list subscriptions</li>
-            </ul>
-          </div>
-          <div class="feature-group">
-            <h4>Privacy</h4>
-            <ul class="feature-list">
-              <li><span class="check gold">&#x2713;</span> Comprehensive tracker blocking (EasyPrivacy)</li>
-              <li><span class="check gold">&#x2713;</span> Cookie banner auto-dismiss</li>
-              <li><span class="check gold">&#x2713;</span> URL tracking parameter stripping</li>
-              <li><span class="check gold">&#x2713;</span> Stealth Mode privacy suite</li>
-              <li><span class="check gold">&#x2713;</span> Global Privacy Control (GPC)</li>
-              <li><span class="check gold">&#x2713;</span> Link-tracking unwrap</li>
-              <li><span class="check gold">&#x2713;</span> Social-widget blocking</li>
-              <li><span class="check gold">&#x2713;</span> Anti-fingerprinting (canvas + plugins)</li>
-              <li><span class="check gold">&#x2713;</span> WebRTC local IP leak prevention</li>
-              <li><span class="check gold">&#x2713;</span> Notification spam auto-deny</li>
-              <li><span class="check gold">&#x2713;</span> Tracker breakdown by category</li>
-              <li><span class="check gold">&#x2713;</span> Tracker controls (allow / block / cookies)</li>
-              <li><span class="check gold">&#x2713;</span> Learn &amp; block cross-site trackers</li>
-            </ul>
-          </div>
-          <div class="feature-group">
-            <h4>Security</h4>
-            <ul class="feature-list">
-              <li><span class="check gold">&#x2713;</span> Malware site blocking (live feed)</li>
-              <li><span class="check gold">&#x2713;</span> Phishing &amp; impersonation detection</li>
-              <li><span class="check gold">&#x2713;</span> Insecure login form detection</li>
-              <li><span class="check gold">&#x2713;</span> Clickjacking protection</li>
-              <li><span class="check gold">&#x2713;</span> Clipboard hijack protection</li>
-              <li><span class="check gold">&#x2713;</span> Formjacking / Magecart detection</li>
-              <li><span class="check gold">&#x2713;</span> Keylogger hook detection</li>
-              <li><span class="check gold">&#x2713;</span> Tab-napping protection</li>
-              <li><span class="check gold">&#x2713;</span> DNS rebinding protection</li>
-              <li><span class="check gold">&#x2713;</span> CDN script tamper detection</li>
-              <li><span class="check gold">&#x2713;</span> Tech-support scam detection</li>
-            </ul>
-          </div>
-        </div>
-        <div class="plan-cta">
-          <a class="btn-plan gold" href="https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm" target="_blank" rel="noopener">Get Ultimate</a>
-          <span class="plan-note">30-day money-back guarantee. Cancel any time.</span>
-        </div>
-      </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container controlled by Alpine State -->
+    <div x-show="currentMainScreen === 'home'">
+        <!-- Hero Section -->
+        <section class="pt-32 pb-24 md:pt-44 md:pb-32 px-4 relative glow-bg">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                
+                <!-- Left Text Content -->
+                <div class="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-brand-300 text-xs font-semibold mb-6 animate-float">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        Manifest V3 Engine — 0% Tracked Data
+                    </div>
+
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6">
+                        Block Every Ad. <br/>
+                        <span class="shimmer-text">
+                            Instantly. Silently. Free.
+                        </span>
+                    </h1>
+
+                    <p class="text-base md:text-lg text-slate-400 mb-8 max-w-xl leading-relaxed">
+                        AllAdsBlock removes banner ads, video ads, pop-ups, and trackers — and blocks malware and phishing sites before they load. Works on every website, right out of the box.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full justify-center lg:justify-start" id="download">
+                        <a href="https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-xl shadow-brand-600/40 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            Add to Chrome — Free
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side: Interactive Extension Panel UI Replica (Full Ultimate Features) -->
+                <div class="w-full max-w-[360px] shrink-0 animate-float" id="panel-demo" x-data="{ active: true, totalBlocked: 42, siteBlocked: 5, videoSkipped: 3, trackers: 12, popups: 8, redirects: 2, malware: 2 }">
+                    <div class="extension-panel rounded-3xl p-5 text-xs text-slate-200 select-none relative overflow-hidden border border-purple-500/40">
+                        
+                        <!-- Top Header -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-base font-extrabold text-white tracking-tight flex items-center gap-1.5">
+                                    AllAdsBlock
+                                </div>
+                                <div class="text-[10px] text-slate-400 font-medium">gemini.google.com</div>
+                            </div>
+                            <button @click="active = !active" class="w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 cursor-pointer" :class="active ? 'bg-emerald-500 justify-end' : 'bg-slate-700 justify-start'">
+                                <span class="w-4 h-4 rounded-full bg-white shadow-md transform transition-transform"></span>
+                            </button>
+                        </div>
+
+                        <!-- Counter Boxes -->
+                        <div class="grid grid-cols-2 gap-2.5 mb-5">
+                            <div class="p-3 rounded-2xl bg-purple-950/40 border border-purple-500/20 text-center">
+                                <div class="text-xl font-black text-white" x-text="totalBlocked">42</div>
+                                <div class="text-[9px] text-slate-400 mt-0.5">blocked here<br/>(all types)</div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-purple-950/40 border border-purple-500/20 text-center">
+                                <div class="text-xl font-black text-white" x-text="siteBlocked">5</div>
+                                <div class="text-[9px] text-slate-400 mt-0.5">blocked<br/>on this site</div>
+                            </div>
+                        </div>
+
+                        <!-- Video Ads Section -->
+                        <div class="mb-4">
+                            <div class="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-2">Video Ads</div>
+                            <div class="flex justify-between items-center py-1 border-b border-indigo-950/40">
+                                <span class="text-slate-300">Sponsored video ads skipped</span>
+                                <span class="font-bold text-white" x-text="videoSkipped">3</span>
+                            </div>
+                        </div>
+
+                        <!-- Privacy & Tracking Section -->
+                        <div class="mb-4">
+                            <div class="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-2">Privacy & Tracking</div>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center py-0.5">
+                                    <span class="text-slate-300">Trackers blocked (EasyPrivacy)</span>
+                                    <span class="font-semibold text-white" x-text="trackers">12</span>
+                                </div>
+                                <div class="flex justify-between items-center py-0.5">
+                                    <span class="text-slate-300">Popups blocked</span>
+                                    <span class="font-semibold text-white" x-text="popups">8</span>
+                                </div>
+                                <div class="flex justify-between items-center py-0.5">
+                                    <span class="text-slate-300">Redirects blocked</span>
+                                    <span class="font-semibold text-white" x-text="redirects">2</span>
+                                </div>
+                                <div class="flex items-center justify-between py-0.5">
+                                    <span class="text-slate-300">Malicious sites blocked</span>
+                                    <span class="font-semibold text-white" x-text="malware">2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ultimate Full Security Overview -->
+                        <div class="mb-4">
+                            <div class="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-2">Ultimate Protection Matrix</div>
+                            <div class="grid grid-cols-2 gap-1.5 text-[10px]">
+                                <div class="text-emerald-400">✓ Anti-fingerprinting</div>
+                                <div class="text-emerald-400">✓ WebRTC IP safe</div>
+                                <div class="text-emerald-400">✓ Formjacking guard</div>
+                                <div class="text-emerald-400">✓ DNS rebinding safe</div>
+                                <div class="text-emerald-400">✓ Keylogger block</div>
+                                <div class="text-emerald-400">✓ Cryptominer drop</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-2 mb-4">
+                            <button @click="active = !active" class="w-full py-2.5 rounded-xl bg-purple-950/60 hover:bg-purple-900 border border-purple-500/30 font-bold text-center transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="pause-circle" class="w-3.5 h-3.5"></i>
+                                <span x-text="active ? 'Pause on this site' : 'Resume protection'">Pause on this site</span>
+                            </button>
+                        </div>
+
+                        <!-- Ultimate Footer Tier Badge -->
+                        <div class="pt-3 border-t border-purple-950/80 flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-purple-600 to-brand-600 text-white font-extrabold text-[10px] flex items-center gap-1 shadow-md">
+                                <i data-lucide="crown" class="w-3 h-3"></i> Ultimate Protection
+                            </span>
+                            <span class="text-emerald-400 text-[10px] font-bold">Active Engine</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Features Section with Hover Animations and Lucide Icons (No Emojis) -->
+        <section id="features" class="py-24 px-4 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">Capabilities</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">One extension handles it all</h3>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">No configuration required. Installs and protects immediately.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="ban" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Banner & Display Ads</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Removes ads from news sites, blogs, and every website you visit. Pages load faster and look cleaner instantly.</p>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="skip-forward" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Skip Video Ads Automatically</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Blocks and skips video ads on streaming and news sites — including pre-roll and mid-roll ads — without you doing anything.</p>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="x-circle" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Stop Pop-ups & Redirects</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Blocks pop-up windows, pop-unders, and malicious redirects that open new tabs or hijack your browser.</p>
+                    </div>
+                </div>
+                <!-- Feature 4 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="eye-off" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Trackers</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Stops analytics scripts and ad-exchange trackers from following you across the web. Strips tracking parameters from URLs.</p>
+                    </div>
+                </div>
+                <!-- Feature 5 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Malware & Phishing</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Known malware domains are blocked before the page loads using a live threat feed. You get a safety warning instead of a dangerous site.</p>
+                    </div>
+                </div>
+                <!-- Feature 6 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="key-round" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Protect Your Logins</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Detects when a login form sends your password over insecure HTTP or to a different domain — and warns you before credentials are exposed.</p>
+                    </div>
+                </div>
+                <!-- Feature 7 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Cryptominers</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Detects and blocks in-browser cryptocurrency mining scripts that silently drain your CPU and battery.</p>
+                    </div>
+                </div>
+                <!-- Feature 8 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
+                            <i data-lucide="fingerprint" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Anti-Fingerprinting</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Adds noise to canvas rendering and masks plugin lists so sites can't build a unique fingerprint to track you across the web.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-24 px-4 max-w-7xl mx-auto relative">
+            <div class="text-center mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">Transparent Plans</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">Choose Your Plan</h3>
+                <p class="text-slate-400 text-sm mb-8">Switch or cancel any time. 30-day money-back guarantee on all paid plans.</p>
+                
+                <!-- Toggle Switcher -->
+                <div class="inline-flex items-center gap-3 p-1.5 rounded-2xl glass-card border border-brand-500/30">
+                    <button @click="cycle = 'monthly'" class="px-5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer" :class="cycle === 'monthly' ? 'bg-brand-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'">Monthly</button>
+                    <button @click="cycle = 'yearly'" class="px-5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer" :class="cycle === 'yearly' ? 'bg-brand-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'">
+                        Yearly <span class="bg-emerald-400 text-slate-950 text-[9px] font-extrabold px-2 py-0.5 rounded-full">Save 40%</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                
+                <!-- Free Plan Card -->
+                <div @click="expandedPlan = 'free'" class="glass-card rounded-3xl p-8 flex flex-col justify-between cursor-pointer transition-all border-2" :class="expandedPlan === 'free' ? 'border-brand-500 shadow-xl shadow-brand-500/10 bg-brand-950/40' : 'border-transparent hover:border-brand-500/30'">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-bold text-slate-300 uppercase tracking-wider">Free</span>
+                            <span class="text-xs text-brand-400 font-bold flex items-center gap-1" x-text="expandedPlan === 'free' ? '▼ Hiding' : '▶ Reveal Features'">▶ Reveal Features</span>
+                        </div>
+                        <div class="text-4xl font-extrabold mb-1">$0 <span class="text-sm text-slate-400 font-normal">forever</span></div>
+                        <div class="text-xl font-extrabold text-slate-300 mb-6">No credit card required</div>
+                        
+                        <div class="space-y-2.5 pt-4 border-t border-indigo-950/80 text-xs text-slate-300" x-show="expandedPlan === 'free'" x-transition>
+                            <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mb-2">Ad Blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive ad blocking (EasyList)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Video ad blocking (pre-roll & mid-roll)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Pop-up & pop-under blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Malicious redirect blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Block any element (picker)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Activity dashboard</div>
+                            
+                            <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mt-4 mb-2">Security</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Malware site blocking (live feed)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Phishing site detection</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Anti-adblock bypass</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Comprehensive tracker blocking (EasyPrivacy)</div>
+
+                            <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mt-4 mb-2">Privacy</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Cookie banner auto-dismiss</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Insecure login form detection</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Anti-fingerprinting</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Cryptominer blocking</div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <a href="https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm" target="_blank" class="w-full py-3.5 glass-card hover:bg-white/10 text-center font-bold rounded-xl transition-all inline-block text-sm">Add to Chrome — Free</a>
+                    </div>
+                </div>
+
+                <!-- Pro Plan Card -->
+                <div @click="expandedPlan = 'pro'" class="rounded-3xl p-8 bg-gradient-to-b from-brand-900/60 to-indigo-950/80 border-2 cursor-pointer transition-all relative shadow-2xl shadow-brand-500/20" :class="expandedPlan === 'pro' ? 'border-brand-500 scale-[1.02]' : 'border-brand-500/50 hover:border-brand-500'">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">Most Popular</div>
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-bold text-brand-300 uppercase tracking-wider">Pro</span>
+                            <span class="text-xs text-brand-300 font-bold flex items-center gap-1" x-text="expandedPlan === 'pro' ? '▼ Hiding' : '▶ Reveal Features'">▶ Reveal Features</span>
+                        </div>
+                        <div class="text-4xl font-extrabold mb-1">
+                            <span x-text="cycle === 'yearly' ? '$1.79' : '$2.99'">$1.79</span> <span class="text-sm text-slate-400 font-normal">/ month</span>
+                        </div>
+                        <!-- Total yearly amount shown below monthly only in yearly mode -->
+                        <div class="text-sm font-bold text-emerald-400 mb-6" x-show="cycle === 'yearly'" x-text="'$21.48 billed yearly'">$21.48 billed yearly</div>
+                        <div class="mb-6" x-show="cycle !== 'yearly'"></div>
+                        
+                        <div class="space-y-2.5 pt-4 border-t border-brand-500/30 text-xs text-slate-200" x-show="expandedPlan === 'pro'" x-transition>
+                            <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mb-2">Ad Blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive ad blocking (EasyList)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Video ad blocking (pre-roll & mid-roll)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Pop-up & pop-under blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Malicious redirect blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Anti-adblock bypass</div>
+
+                            <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mt-4 mb-2">Privacy</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive tracker blocking (EasyPrivacy)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Cookie banner auto-dismiss</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ URL tracking parameter stripping</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Anti-fingerprinting</div>
+                            <div class="flex items-center gap-2 text-slate-500">— WebRTC IP leak protection</div>
+
+                            <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mt-4 mb-2">Security</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Malware site blocking (live feed)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Phishing site detection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Insecure login form detection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Brand-impersonation detection</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Clickjacking protection</div>
+                            <div class="flex items-center gap-2 text-slate-500">— Cryptominer blocking</div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <a :href="cycle === 'yearly' ? 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=pro&billing=yearly' : 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=pro'" target="_blank" class="w-full py-3.5 bg-brand-500 hover:bg-brand-400 text-white text-center font-bold rounded-xl transition-all shadow-lg inline-block text-sm">Get Pro</a>
+                    </div>
+                </div>
+
+                <!-- Ultimate Plan Card -->
+                <div @click="expandedPlan = 'ultimate'" class="glass-card rounded-3xl p-8 flex flex-col justify-between cursor-pointer transition-all border-2 relative" :class="expandedPlan === 'ultimate' ? 'border-purple-500 shadow-xl shadow-purple-500/10 bg-purple-950/30 scale-[1.02]' : 'border-purple-500/30 hover:border-purple-500/60'">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">Best Value</div>
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-bold text-purple-400 uppercase tracking-wider">Ultimate</span>
+                            <span class="text-xs text-purple-300 font-bold flex items-center gap-1" x-text="expandedPlan === 'ultimate' ? '▼ Hiding' : '▶ Reveal Features'">▶ Reveal Features</span>
+                        </div>
+                        <div class="text-4xl font-extrabold mb-1">
+                            <span x-text="cycle === 'yearly' ? '$3.59' : '$5.99'">$3.59</span> <span class="text-sm text-slate-400 font-normal">/ month</span>
+                        </div>
+                        <!-- Total yearly amount shown below monthly only in yearly mode -->
+                        <div class="text-sm font-bold text-emerald-400 mb-6" x-show="cycle === 'yearly'" x-text="'$43.08 billed yearly'">$43.08 billed yearly</div>
+                        <div class="mb-6" x-show="cycle !== 'yearly'"></div>
+                        
+                        <div class="space-y-2.5 pt-4 border-t border-purple-500/30 text-xs text-slate-200" x-show="expandedPlan === 'ultimate'" x-transition>
+                            <div class="font-bold text-xs text-purple-400 uppercase tracking-wider mb-2">Ad Blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive ad blocking (EasyList)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Video ad blocking (pre-roll & mid-roll)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Pop-up & pop-under blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Malicious redirect blocking</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Anti-adblock bypass</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Cryptominer blocking</div>
+
+                            <div class="font-bold text-xs text-purple-400 uppercase tracking-wider mt-4 mb-2">Privacy</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive tracker blocking (EasyPrivacy)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Cookie banner auto-dismiss</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ URL tracking parameter stripping</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Anti-fingerprinting (canvas + plugins)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ WebRTC local IP leak prevention</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Notification spam auto-deny</div>
+
+                            <div class="font-bold text-xs text-purple-400 uppercase tracking-wider mt-4 mb-2">Security</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Malware site blocking (live feed)</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Phishing & impersonation detection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Insecure login form detection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Clickjacking protection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Clipboard hijack protection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Formjacking / Magecart detection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Keylogger hook detection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Tab-napping protection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ DNS rebinding protection</div>
+                            <div class="flex items-center gap-2 text-emerald-400">✓ Tech-support scam detection</div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <a :href="cycle === 'yearly' ? 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=ultimate&billing=yearly' : 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=ultimate'" target="_blank" class="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white text-center font-bold rounded-xl transition-all shadow-lg inline-block text-sm">Get Ultimate</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FAQ / Q&A Section with Accordion Reveal Animations -->
+        <section id="faq" class="py-24 px-4 max-w-4xl mx-auto border-t border-indigo-950/60" x-data="{ openFaq: null }">
+            <div class="text-center mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">FAQ</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Everything you want to know before installing</h3>
+            </div>
+
+            <div class="space-y-4">
+                <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+                    <button @click="openFaq = openFaq === 1 ? null : 1" class="w-full p-6 text-left flex items-center justify-between font-bold text-base text-white hover:text-brand-300 transition-colors cursor-pointer">
+                        <span>Is AllAdsBlock really free?</span>
+                        <span class="transform transition-transform duration-300 text-brand-400" :class="openFaq === 1 ? 'rotate-180' : ''">▼</span>
+                    </button>
+                    <div x-show="openFaq === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="px-6 pb-6 text-xs text-slate-400 leading-relaxed border-t border-indigo-950/40 pt-4">
+                        Yes. The Free plan blocks ads, video ads, pop-ups, and malware sites with no time limit, no credit card, and no account. Pro and Ultimate add privacy and security features for a monthly fee.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+                    <button @click="openFaq = openFaq === 2 ? null : 2" class="w-full p-6 text-left flex items-center justify-between font-bold text-base text-white hover:text-brand-300 transition-colors cursor-pointer">
+                        <span>Does it collect my browsing data?</span>
+                        <span class="transform transition-transform duration-300 text-brand-400" :class="openFaq === 2 ? 'rotate-180' : ''">▼</span>
+                    </button>
+                    <div x-show="openFaq === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="px-6 pb-6 text-xs text-slate-400 leading-relaxed border-t border-indigo-950/40 pt-4">
+                        No. AllAdsBlock does not track what sites you visit, collect browsing history, or send personal data to us. All blocking runs locally in your browser. See our Privacy Policy for full details.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+                    <button @click="openFaq = openFaq === 3 ? null : 3" class="w-full p-6 text-left flex items-center justify-between font-bold text-base text-white hover:text-brand-300 transition-colors cursor-pointer">
+                        <span>Does it block video ads on streaming sites?</span>
+                        <span class="transform transition-transform duration-300 text-brand-400" :class="openFaq === 3 ? 'rotate-180' : ''">▼</span>
+                    </button>
+                    <div x-show="openFaq === 3" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="px-6 pb-6 text-xs text-slate-400 leading-relaxed border-t border-indigo-950/40 pt-4">
+                        Yes. AllAdsBlock blocks and auto-skips video ads on many streaming and news sites — including pre-roll and mid-roll ads that play before or during videos.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+                    <button @click="openFaq = openFaq === 4 ? null : 4" class="w-full p-6 text-left flex items-center justify-between font-bold text-base text-white hover:text-brand-300 transition-colors cursor-pointer">
+                        <span>Will it slow down my browser?</span>
+                        <span class="transform transition-transform duration-300 text-brand-400" :class="openFaq === 4 ? 'rotate-180' : ''">▼</span>
+                    </button>
+                    <div x-show="openFaq === 4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="px-6 pb-6 text-xs text-slate-400 leading-relaxed border-t border-indigo-950/40 pt-4">
+                        No — it speeds it up. AllAdsBlock uses Chrome's modern Manifest V3 (MV3) architecture with native browser rules. Fewer ads means fewer resources downloaded, so pages actually load faster.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+                    <button @click="openFaq = openFaq === 5 ? null : 5" class="w-full p-6 text-left flex items-center justify-between font-bold text-base text-white hover:text-brand-300 transition-colors cursor-pointer">
+                        <span>What happens if a site detects my ad blocker?</span>
+                        <span class="transform transition-transform duration-300 text-brand-400" :class="openFaq === 5 ? 'rotate-180' : ''">▼</span>
+                    </button>
+                    <div x-show="openFaq === 5" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="px-6 pb-6 text-xs text-slate-400 leading-relaxed border-t border-indigo-950/40 pt-4">
+                        Pro and Ultimate include anti-adblock bypass, which hides the extension from detection scripts on sites that would otherwise nag or block you.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
+                    <button @click="openFaq = openFaq === 6 ? null : 6" class="w-full p-6 text-left flex items-center justify-between font-bold text-base text-white hover:text-brand-300 transition-colors cursor-pointer">
+                        <span>Can I pause it on specific sites?</span>
+                        <span class="transform transition-transform duration-300 text-brand-400" :class="openFaq === 6 ? 'rotate-180' : ''">▼</span>
+                    </button>
+                    <div x-show="openFaq === 6" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="px-6 pb-6 text-xs text-slate-400 leading-relaxed border-t border-indigo-950/40 pt-4">
+                        Yes. Click the AllAdsBlock icon in your Chrome toolbar and press "Pause on this site" to allow ads on any site you choose to support.
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Billed via LemonSqueezy. Yearly plans save over 40%. See our <a href="refund.html">Refund Policy</a>.</p>
-  </section>
+    <!-- Full Dedicated Privacy Policy Screen View (Navigated to via Privacy Policy link/tab) -->
+    <main x-show="currentMainScreen === 'privacy'" class="max-w-5xl mx-auto px-4 py-32 w-full flex-grow" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-3" x-transition:enter-end="opacity-100 translate-y-0">
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-brand-300 text-xs font-semibold mb-4">
+                <i data-lucide="scale" class="w-4 h-4 text-brand-400"></i> Legal & Compliance Center
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-3">Privacy Policy & Sub-Tabs</h1>
+            <p class="text-slate-400 text-sm max-w-lg mx-auto">Explore our granular security policies, data handling specifications, and user protection frameworks.</p>
+        </div>
 
-  <!-- FAQ -->
-  <section id="faq">
-    <h2>Frequently asked questions</h2>
-    <p class="section-sub">Everything you want to know before installing.</p>
-    <div class="faq-list">
-      <div class="faq-item">
-        <h3>Is AllAdsBlock really free?</h3>
-        <p>Yes. The Free plan blocks ads, video ads, pop-ups, and malware sites with no time limit, no credit card, and no account. Pro and Ultimate add privacy and security features for a monthly fee.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Does it collect my browsing data?</h3>
-        <p>No. AllAdsBlock does not track what sites you visit, collect browsing history, or send personal data to us. All blocking runs locally in your browser. See our <a href="privacy.html">Privacy Policy</a> for full details.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Does it block video ads on streaming sites?</h3>
-        <p>Yes. AllAdsBlock blocks and auto-skips video ads on many streaming and news sites — including pre-roll and mid-roll ads that play before or during videos.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Will it slow down my browser?</h3>
-        <p>No — it speeds it up. AllAdsBlock uses Chrome's modern Manifest V3 (MV3) architecture with native browser rules. Fewer ads means fewer resources downloaded, so pages actually load faster.</p>
-      </div>
-      <div class="faq-item">
-        <h3>What happens if a site detects my ad blocker?</h3>
-        <p>Pro and Ultimate include anti-adblock bypass, which hides the extension from detection scripts on sites that would otherwise nag or block you.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Can I pause it on specific sites?</h3>
-        <p>Yes. Click the AllAdsBlock icon in your Chrome toolbar and press "Pause on this site" to allow ads on any site you choose to support.</p>
-      </div>
-    </div>
-  </section>
+        <!-- Sub-Tabs Navigation for Privacy Policy Layout -->
+        <div class="flex flex-wrap justify-center gap-3 mb-10">
+            <button @click="currentPrivacyTab = 'privacy'" class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 cursor-pointer shadow-lg" :class="currentPrivacyTab === 'privacy' ? 'bg-brand-600 text-white border border-brand-400/50 shadow-brand-600/30' : 'glass-card text-slate-400 hover:text-white'">
+                <i data-lucide="shield-check" class="w-4 h-4"></i> Privacy Policy
+            </button>
+            <button @click="currentPrivacyTab = 'terms'" class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 cursor-pointer shadow-lg" :class="currentPrivacyTab === 'terms' ? 'bg-brand-600 text-white border border-brand-400/50 shadow-brand-600/30' : 'glass-card text-slate-400 hover:text-white'">
+                <i data-lucide="file-text" class="w-4 h-4"></i> Terms of Service
+            </button>
+            <button @click="currentPrivacyTab = 'refund'" class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 cursor-pointer shadow-lg" :class="currentPrivacyTab === 'refund' ? 'bg-brand-600 text-white border border-brand-400/50 shadow-brand-600/30' : 'glass-card text-slate-400 hover:text-white'">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Refund Policy
+            </button>
+        </div>
 
-  <!-- CTA banner -->
-  <div class="cta-banner">
-    <img src="icon128.png" alt="AllAdsBlock" style="width:56px;height:56px;border-radius:14px;margin:0 auto 16px;display:block;">
-    <h2>Ready for a cleaner web?</h2>
-    <p>Block ads, trackers, and threats — for free, in one click.</p>
-    <a class="btn-primary" href="https://chromewebstore.google.com/detail/genoghemojmpooajgdblfckhpekeadmm" target="_blank" rel="noopener">
-      <img src="icon48.png" alt="">
-      Add AllAdsBlock to Chrome
-    </a>
-    <div style="margin-top:14px;font-size:13px;color:var(--muted);">Free forever &middot; No account &middot; No data collected</div>
-  </div>
+        <!-- Full Sub-Tab Content Sheet Layout -->
+        <div class="glass-card rounded-3xl p-6 md:p-10 border border-brand-500/30 shadow-2xl relative overflow-hidden mb-12">
+            
+            <!-- Sub-Tab: Privacy Policy -->
+            <div x-show="currentPrivacyTab === 'privacy'" x-transition:enter="transition ease-out duration-200" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+                <div class="border-b border-indigo-950/80 pb-4 flex items-center justify-between">
+                    <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-brand-400"></i> Privacy Policy
+                    </h2>
+                    <span class="text-xs text-brand-400 font-semibold">Last updated: July 11, 2026. Operated by ShellyApps (Israel).</span>
+                </div>
+                <div class="space-y-4 text-xs md:text-sm text-slate-400 leading-relaxed">
+                    <p>AllAdsBlock is built to protect your privacy, not exploit it. We do not run analytics on you, we do not sell data, and the extension does not transmit your browsing history to us. This policy explains exactly what happens with your data.</p>
+                    
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">1. Data stored on your device only</h3>
+                    <p>The following never leaves your browser except via Chrome's own optional settings-sync:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Blocking statistics — counts of ads, trackers, pop-ups, and threats blocked (per site and in total), shown in the popup.</li>
+                        <li>Per-page threat log — a rolling in-memory list of security events detected on the current page (threat category and timestamp only). Cleared on every page navigation. Never written to disk or transmitted.</li>
+                        <li>Cookie hygiene (Stealth Mode) — if you enable it, cookies for sites you no longer have open are removed and cookie lifetimes can be capped. This happens locally via the browser's cookie storage; nothing is transmitted.</li>
+                        <li>Your allowlist — sites you've paused protection on.</li>
+                        <li>Filter-list subscriptions — any custom filter lists you add (stored locally; the extension refreshes them from their source).</li>
+                        <li>License / promo state — whether you're on Free, Pro, or Ultimate and your key (stored in Chrome storage.sync).</li>
+                    </ul>
 
-  <section id="support">
-    <h2>About &amp; support</h2>
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;font-size:14px;color:#d1d5db;">
-      <p><strong>AllAdsBlock</strong> is developed and operated by <strong>ShellyApps</strong> (Israel).</p>
-      <p style="margin-top:8px;">Support &amp; billing: <a href="mailto:ambarshely@gmail.com">ambarshely@gmail.com</a> — we reply within 2 business days.</p>
-    </div>
-  </section>
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">2. Information sent off your device</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Payments & license validation — LemonSqueezy. Purchases are processed by our reseller LemonSqueezy (a Merchant of Record). When you activate a paid license, your license key is sent to LemonSqueezy's API to confirm it's valid. We never see or store your card details. See LemonSqueezy's privacy policy at lemonsqueezy.com/privacy.</li>
+                        <li>Malware/phishing threat feed. The extension periodically downloads a public malware-domain list from URLhaus (abuse.ch). This is a standard one-way download — no information about you or the sites you visit is sent.</li>
+                        <li>Filter lists &amp; subscriptions. To keep ad- and tracker-blocking rules current, the extension periodically downloads public filter lists (for example, from GitHub) — one enabled by default, plus any lists you choose to subscribe to. These are standard one-way file downloads; no information about you or the sites you visit is sent.</li>
+                        <li>Family/promo keys are verified entirely on your device (offline) and contact no server.</li>
+                    </ul>
+                    <p>That is the complete list of network connections the extension makes. There is no analytics, advertising, or tracking SDK of any kind.</p>
 
-</div>
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">3. Ultimate plan — on-device security features</h3>
+                    <p>The Ultimate plan includes active security protections that analyse page content and browser APIs locally. All processing happens exclusively on your device. The data each feature accesses, and what it does with it:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Clipboard hijack protection. Reads clipboard text only during your own copy events (i.e. when you press Ctrl+C / Cmd+C). The content is checked against a crypto-wallet address pattern. If a substitution is detected, the original selection is restored. Clipboard content is never stored or transmitted.</li>
+                        <li>Formjacking / Magecart detection. Reads the action attribute of &lt;form&gt; elements to check whether they submit to a different domain. No form values or user input are ever read.</li>
+                        <li>Hidden autofill-field detection. Checks whether password or payment-card input fields are positioned off-screen or invisible — a known data-harvesting technique. Input values are never read.</li>
+                        <li>Tab-napping protection. Monitors the page &lt;title&gt; element for changes while the browser tab is not in focus, to detect impersonation attempts.</li>
+                        <li>DNS rebinding protection. Intercepts outgoing fetch and XMLHttpRequest calls made by the page and blocks any that target private IP ranges (192.168.x.x, 10.x.x.x, 127.x.x.x, localhost). The URL of blocked requests is not stored or transmitted.</li>
+                        <li>WebRTC local IP leak prevention. Intercepts WebRTC ICE candidate events and suppresses candidates that would expose your local network IP address. No connection data is stored or transmitted.</li>
+                        <li>Notification spam auto-deny. Overrides the browser Notification permission prompt so that permission requests from websites are automatically denied without prompting you. No data is stored or transmitted.</li>
+                        <li>Keylogger hook detection. Monitors for JavaScript attempts to override HTMLInputElement.prototype.value — a technique used by credential-stealing scripts. Detects the override attempt only; keyboard input is never read or recorded.</li>
+                        <li>Tab-napping & tech-support scam detection. Reads visible text content of large fixed-position overlays to identify known tech-support scam phrases. Page text is checked locally and never transmitted.</li>
+                        <li>Anti-fingerprinting. Adds imperceptible noise to canvas rendering and masks browser plugin lists to make fingerprinting less reliable. No data is collected.</li>
+                    </ul>
 
-<footer>
-  <p class="disclaimer">AllAdsBlock is an independent product and is not affiliated with, endorsed by, or sponsored by Google, Chrome, or any other company named or detected by the extension. All trademarks are the property of their respective owners.</p>
-  &copy; 2026 AllAdsBlock / ShellyApps.
-  <div style="margin-top:8px;">
-    <a href="index.html">Home</a> &middot;
-    <a href="#pricing">Pricing</a> &middot;
-    <a href="privacy.html">Privacy</a> &middot;
-    <a href="terms.html">Terms</a> &middot;
-    <a href="refund.html">Refunds</a> &middot;
-    <a href="#support">Support</a>
-  </div>
-</footer>
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">4. What we do not collect</h3>
+                    <p>We do not collect your browsing history, URLs you visit, page contents, form values, keyboard input, clipboard contents, or any personally identifying information. Every security check described above runs locally in your browser and the results stay on your device.</p>
 
-<script>
-(function () {
-  var tabs   = document.querySelectorAll('.plan-tab');
-  var panels = document.querySelectorAll('.plan-panel');
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">5. Permissions</h3>
+                    <p>The extension requests broad host access (&lt;all_urls&gt;) because ad, tracker, and threat blocking must work on every site you visit. This access is used solely to apply blocking rules and run on-page protections — not to record or transmit your browsing activity.</p>
 
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      var plan = this.getAttribute('data-plan');
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">6. Children</h3>
+                    <p>AllAdsBlock is not directed to children under 13 and does not knowingly collect data from them.</p>
 
-      tabs.forEach(function (t) { t.classList.remove('active'); });
-      panels.forEach(function (p) { p.classList.remove('active'); });
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">7. Changes</h3>
+                    <p>We may update this policy; material changes will be reflected here with a new date. Significant changes will also be noted in the extension's release notes.</p>
 
-      this.classList.add('active');
-      document.querySelector('.plan-panel[data-plan="' + plan + '"]').classList.add('active');
-    });
-  });
-})();
-</script>
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">8. Contact</h3>
+                    <p>Questions about privacy: ambarshely@gmail.com.</p>
+                </div>
+            </div>
 
+            <!-- Sub-Tab: Terms of Service -->
+            <div x-show="currentPrivacyTab === 'terms'" x-transition:enter="transition ease-out duration-200" class="space-y-6 text-sm text-slate-300 leading-relaxed" style="display: none;">
+                <div class="border-b border-indigo-950/80 pb-4 flex items-center justify-between">
+                    <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-6 h-6 text-brand-400"></i> Terms of Service
+                    </h2>
+                    <span class="text-xs text-brand-400 font-semibold">Last updated: June 17, 2026. Operated by ShellyApps (Israel).</span>
+                </div>
+                <div class="space-y-4 text-xs md:text-sm text-slate-400 leading-relaxed">
+                    <p>By installing or using the AllAdsBlock browser extension ("the Service"), you agree to these Terms.</p>
+                    
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">1. License</h3>
+                    <p>We grant you a personal, non-exclusive, non-transferable license to use the extension. Paid plans (Pro, Ultimate) unlock additional features for the duration of your subscription. Family/promo keys are provided at our discretion and may be revoked.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">2. Acceptable use</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Do not resell, redistribute, or sublicense the extension or license keys.</li>
+                        <li>Do not attempt to forge, share, or circumvent license or promo keys.</li>
+                        <li>Do not use the extension for unlawful purposes.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">3. Payments & subscriptions</h3>
+                    <p>Purchases and subscriptions are sold and processed by our reseller LemonSqueezy as Merchant of Record. Subscriptions renew automatically until cancelled. You can cancel at any time and keep access until the end of the current billing period. Refunds are governed by our Refund Policy.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">4. Service "as is"</h3>
+                    <p>The extension blocks ads and known threats on a best-effort basis. No ad blocker or security tool is perfect; we do not guarantee that every ad, tracker, or malicious site will be blocked, and the Service is provided "as is" without warranties of any kind. Always use good judgment online.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">5. Limitation of liability</h3>
+                    <p>To the maximum extent permitted by law, ShellyApps is not liable for indirect, incidental, or consequential damages arising from use of the Service.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">6. Changes & termination</h3>
+                    <p>We may update the Service or these Terms. We may suspend access for violations of these Terms.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">7. Governing law</h3>
+                    <p>These Terms are governed by the laws of Israel, without regard to conflict-of-laws rules.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">8. Contact</h3>
+                    <p>ambarshely@gmail.com</p>
+                </div>
+            </div>
+
+            <!-- Sub-Tab: Refund Policy -->
+            <div x-show="currentPrivacyTab === 'refund'" x-transition:enter="transition ease-out duration-200" class="space-y-6 text-sm text-slate-300 leading-relaxed" style="display: none;">
+                <div class="border-b border-indigo-950/80 pb-4 flex items-center justify-between">
+                    <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-6 h-6 text-brand-400"></i> Refund & Cancellation Policy
+                    </h2>
+                    <span class="text-xs text-brand-400 font-semibold">Last updated: June 17, 2026. Operated by ShellyApps.</span>
+                </div>
+                <div class="space-y-4 text-xs md:text-sm text-slate-400 leading-relaxed">
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">30-day money-back guarantee</h3>
+                    <p>If you're not satisfied with a Pro or Ultimate subscription, contact us within 30 days of your purchase and we'll refund it in full — no questions asked.</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">Cancellation</h3>
+                    <p>You can cancel your subscription at any time. After cancelling, you keep access to paid features until the end of your current billing period; you will not be charged again. Cancelling does not automatically issue a refund for the current period (use the money-back guarantee above if you're within 30 days).</p>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">How to request a refund or cancel</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Email ambarshely@gmail.com with the email address used at checkout, or</li>
+                        <li>Use the receipt link from LemonSqueezy (our payment processor) to manage your subscription.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-white text-xs uppercase tracking-wider pt-2">Processing</h3>
+                    <p>Refunds are processed by LemonSqueezy back to your original payment method, typically within 5–10 business days.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center pb-12">
+            <button @click="currentMainScreen = 'home'" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl transition-all shadow-lg inline-flex items-center gap-2 cursor-pointer">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Main Site
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <main class="border-t border-indigo-950/60 py-12 px-4 text-center text-sm text-slate-500 w-full mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2 font-bold text-slate-300">
+                <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
+                AllAdsBlock
+            </div>
+            <div>AllAdsBlock is developed and operated by ShellyApps (Israel).</div>
+            <div class="text-xs">© 2026 All rights reserved.</div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

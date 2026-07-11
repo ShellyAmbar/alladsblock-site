@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shellyambar.github.io/alladsblock-site/sitemap.xml

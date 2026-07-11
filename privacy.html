@@ -15,7 +15,7 @@
 <body><div class="wrap">
   <p><a class="back" href="index.html">← AllAdsBlock</a></p>
   <h1>Privacy Policy</h1>
-  <p class="muted">Last updated: June 30, 2026. Operated by ShellyApps (Israel).</p>
+  <p class="muted">Last updated: July 11, 2026. Operated by ShellyApps (Israel).</p>
 
   <p style="margin-top:18px;">AllAdsBlock is built to <strong>protect</strong> your privacy, not exploit it. We do not run analytics on you, we do not sell data, and the extension does not transmit your browsing history to us. This policy explains exactly what happens with your data.</p>
 
@@ -24,7 +24,7 @@
   <ul>
     <li><strong>Blocking statistics</strong> — counts of ads, trackers, pop-ups, and threats blocked (per site and in total), shown in the popup.</li>
     <li><strong>Per-page threat log</strong> — a rolling in-memory list of security events detected on the current page (threat category and timestamp only). Cleared on every page navigation. Never written to disk or transmitted.</li>
-    <li><strong>CDN script hashes</strong> (Ultimate plan) — SHA-256 fingerprints of third-party CDN scripts observed on pages you visit, stored locally in <code>chrome.storage.local</code> to detect tampering on future visits. Only the hash is stored — never the script content itself.</li>
+    <li><strong>Cookie hygiene</strong> (Stealth Mode) — if you enable it, cookies for sites you no longer have open are removed and cookie lifetimes can be capped. This happens locally via the browser's cookie storage; nothing is transmitted.</li>
     <li><strong>Your allowlist</strong> — sites you've paused protection on.</li>
     <li><strong>License / promo state</strong> — whether you're on Free, Pro, or Ultimate and your key (stored in Chrome <code>storage.sync</code>).</li>
     <li><strong>Your settings</strong> — the on/off state of every feature you toggle (Stealth Mode options, annoyance filters, and so on), stored in <code>chrome.storage.sync</code>.</li>
@@ -37,8 +37,7 @@
   <ul>
     <li><strong>Payments &amp; license validation — LemonSqueezy.</strong> Purchases are processed by our reseller LemonSqueezy (a Merchant of Record). When you activate a paid license, your license key is sent to LemonSqueezy's API to confirm it's valid. We never see or store your card details. See LemonSqueezy's privacy policy at <a href="https://www.lemonsqueezy.com/privacy" target="_blank" rel="noopener">lemonsqueezy.com/privacy</a>.</li>
     <li><strong>Malware/phishing threat feed.</strong> The extension periodically downloads a public malware-domain list from URLhaus (abuse.ch). This is a standard one-way download — <em>no information about you or the sites you visit is sent</em>.</li>
-    <li><strong>CDN script integrity checks</strong> (Ultimate plan). When a page loads a script from a public CDN (e.g. unpkg.com, cdnjs.cloudflare.com, jsdelivr.net), the extension downloads a copy of that script to compute its hash and compare it against a locally stored baseline. The request goes directly to the CDN — <em>the CDN server may log your IP address as part of normal server logging</em>, but no information about you or the page you are visiting is sent in the request. We receive nothing from these requests.</li>
-    <li><strong>Custom filter-list subscriptions.</strong> If you subscribe to a filter list by URL, the extension downloads that list from the address <em>you</em> provide and refreshes it about once a day. The request goes directly to that server, which may log your IP address as part of normal server logging — <em>no information about you or the sites you visit is sent</em>.</li>
+    <li><strong>Filter lists &amp; subscriptions.</strong> To keep ad- and tracker-blocking rules current, the extension periodically downloads public filter lists — one enabled by default, plus any lists <em>you</em> subscribe to by URL — refreshed about once a day. Each request goes directly to that list's server, which may log your IP address as part of normal server logging; <em>no information about you or the sites you visit is sent</em>.</li>
     <li><strong>Family/promo keys</strong> are verified entirely on your device (offline) and contact no server.</li>
   </ul>
   <p>That is the complete list of network connections the extension makes. There is no analytics, advertising, or tracking SDK of any kind.</p>
