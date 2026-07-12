@@ -109,16 +109,129 @@
             border: 1px solid rgba(99, 102, 241, 0.3);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
+        /* Feature coverflow (3D carousel). Clip lives on the outer 2D wrapper (.feature-coverflow-clip);
+           the inner .feature-coverflow only holds the 3D perspective so clipping can't flatten it. */
+        .feature-coverflow-clip { overflow: hidden; }
+        .feature-coverflow .feature-card { transition: transform .6s cubic-bezier(.22,.61,.36,1), opacity .5s ease; backface-visibility: hidden; will-change: transform, opacity; }
+        /* Hide the scrollbar on the mobile plan carousel (still scrollable) */
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .glow-bg > .absolute, .animate-glow { max-width: 100vw; }   /* ambient glows never force width */
+        @media (max-width: 640px) {
+            h1 { font-size: 2rem; line-height: 1.15; }
+            /* mobile menu dropdown */
+            .mobile-menu-panel a, .mobile-menu-panel button { display: block; width: 100%; }
+        }
     </style>
+    <script>
+    window.coverflow = function () {
+      return {
+        active: 0, paused: true,
+        items: [
+          { icon: "ban", title: "Block Banner & Display Ads", desc: "Removes ads from news sites, blogs, and every website you visit. Pages load faster and look cleaner instantly." },
+          { icon: "skip-forward", title: "Skip Video Ads Automatically", desc: "Blocks and skips video ads on streaming and news sites — including pre-roll and mid-roll ads — without you doing anything." },
+          { icon: "x-circle", title: "Stop Pop-ups & Redirects", desc: "Blocks pop-up windows, pop-unders, and malicious redirects that open new tabs or hijack your browser." },
+          { icon: "eye-off", title: "Block Trackers", desc: "Stops analytics scripts and ad-exchange trackers from following you across the web. Strips tracking parameters from URLs." },
+          { icon: "shield-alert", title: "Block Malware & Phishing", desc: "Known malware domains are blocked before the page loads using a live threat feed. You get a safety warning instead of a dangerous site." },
+          { icon: "key-round", title: "Protect Your Logins", desc: "Detects when a login form sends your password over insecure HTTP or to a different domain — and warns you before credentials are exposed." },
+          { icon: "cpu", title: "Block Cryptominers", desc: "Detects and blocks in-browser cryptocurrency mining scripts that silently drain your CPU and battery." },
+          { icon: "fingerprint", title: "Anti-Fingerprinting", desc: "Adds noise to canvas rendering and masks plugin lists so sites can't build a unique fingerprint to track you across the web." }
+        ],
+        start() {
+          this.$nextTick(() => { if (window.lucide) lucide.createIcons(); });
+          setInterval(() => { if (!this.paused) this.active = (this.active + 1) % this.items.length; }, 2200);
+          // Stay parked on card 1 until the carousel scrolls into view, then auto-slide from the start.
+          if ("IntersectionObserver" in window) {
+            new IntersectionObserver((entries) => entries.forEach((e) => {
+              if (e.isIntersecting) { if (!this._seen) { this._seen = true; this.active = 0; } this.paused = false; }
+              else { this.paused = true; }
+            }), { threshold: 0.35 }).observe(this.$el);
+          } else { this.paused = false; }
+        },
+        cardStyle(idx) {
+          const n = this.items.length;
+          let p = idx - this.active;
+          if (p >  n / 2) p -= n;
+          if (p < -n / 2) p += n;
+          const ap = Math.abs(p);
+          if (ap > 2) return "opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.5);";
+          const x = p * 52, rot = -p * 42, scale = 1 - ap * 0.18;
+          const op = ap === 0 ? 1 : (ap === 1 ? 0.6 : 0.28);
+          const z  = 30 - Math.round(ap * 10);
+          return `transform:translate(-50%,-50%) translateX(${x}%) rotateY(${rot}deg) scale(${scale});opacity:${op};z-index:${z};`;
+        }
+      };
+    };
+    </script>
+    <script>
+    // Expose the scrollbar width as --sbw so the fixed navbar can inset its right edge by exactly that
+    // much (0 on phones with overlay scrollbars; ~9-15px in DevTools/desktop). Kills the residual gap.
+    (function () {
+      function sbw() {
+        var w = window.innerWidth - document.documentElement.clientWidth;
+        document.documentElement.style.setProperty('--sbw', (w > 0 ? w : 0) + 'px');
+      }
+      sbw();
+      window.addEventListener('resize', sbw);
+      window.addEventListener('load', sbw);
+    })();
+
+    // Mobile plan carousel: scroll the #plan-scroller so a given plan card is centered, and report
+    // whichever card is currently nearest the center (to light up the matching tab). Plain DOM so it
+    // doesn't touch Alpine scope — the active tab is held in the body's `planTab`.
+    function _planCenterOffset(c, el) {
+      return c.scrollLeft + el.getBoundingClientRect().left - c.getBoundingClientRect().left
+             - (c.clientWidth - el.clientWidth) / 2;
+    }
+    // Eased scroll (easeInOutCubic) for a smoother, more deliberate glide than the browser default.
+    function _animScrollLeft(c, target, duration) {
+      target = Math.max(0, target);
+      var start = c.scrollLeft, dist = target - start, t0 = null;
+      if (Math.abs(dist) < 1) return;
+      var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      c.style.scrollSnapType = 'none';   // snap-mandatory would yank each frame to a snap point → no glide
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / duration, 1);
+        c.scrollLeft = start + dist * ease(p);
+        if (p < 1) requestAnimationFrame(step);
+        else c.style.scrollSnapType = '';  // restore CSS snap once settled on the (snap-point) target
+      }
+      requestAnimationFrame(step);
+    }
+    window.scrollToPlan = function (name) {
+      var c = document.getElementById('plan-scroller');
+      var el = c && c.querySelector('[data-plan="' + name + '"]');
+      if (c && el) _animScrollLeft(c, _planCenterOffset(c, el), 550);
+    };
+    window.nearestPlan = function () {
+      var c = document.getElementById('plan-scroller');
+      if (!c) return 'pro';
+      var cr = c.getBoundingClientRect(), center = cr.left + cr.width / 2, best = 'pro', bd = Infinity;
+      c.querySelectorAll('[data-plan]').forEach(function (el) {
+        var r = el.getBoundingClientRect(), d = Math.abs((r.left + r.width / 2) - center);
+        if (d < bd) { bd = d; best = el.dataset.plan; }
+      });
+      return best;
+    };
+    // Start the carousel on the "Free" card (matches the default active tab) on phones.
+    window.addEventListener('load', function () {
+      if (window.innerWidth >= 768) return;
+      var c = document.getElementById('plan-scroller');
+      var el = c && c.querySelector('[data-plan="free"]');
+      if (c && el) c.scrollLeft = Math.max(0, _planCenterOffset(c, el));
+    });
+    </script>
 </head>
-<body class="bg-[#090816] text-slate-100 antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white" x-data="{ currentMainScreen: 'home', cycle: 'yearly', expandedPlan: 'pro', currentPrivacyTab: 'privacy' }">
+<body class="bg-[#090816] text-slate-100 antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white" x-data="{ currentMainScreen: 'home', cycle: 'yearly', expandedPlan: 'free', currentPrivacyTab: 'privacy', mobileMenu: false, planTab: 'free' }">
 
     <!-- Ambient Background Glows -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-600/15 blur-[160px] rounded-full pointer-events-none -z-10 animate-glow"></div>
+    <div class="absolute top-0 inset-x-0 mx-auto w-full max-w-[900px] h-[500px] bg-brand-600/15 blur-[160px] rounded-full pointer-events-none -z-10 animate-glow"></div>
 
     <!-- Floating Navbar -->
-    <header class="fixed top-4 left-0 right-0 z-50 px-4 max-w-7xl mx-auto">
-        <nav class="glass-card rounded-2xl px-6 py-3 flex items-center justify-between shadow-2xl shadow-indigo-950/65 border border-brand-500/20">
+    <!-- right edge insets by the scrollbar width (--sbw) so the fixed bar never spills past the content -->
+    <header class="fixed top-4 left-0 right-[var(--sbw,0px)] z-50 px-4 max-w-7xl mx-auto">
+        <nav class="glass-card rounded-2xl px-4 py-2.5 md:px-6 md:py-3 flex items-center justify-between shadow-2xl shadow-indigo-950/65 border border-brand-500/20">
             <div class="flex items-center gap-3 group cursor-pointer shrink-0 overflow-hidden pr-2" @click="currentMainScreen = 'home'">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 shrink-0">
                     <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
@@ -143,31 +256,42 @@
                     </button>
                 </template>
             </div>
-            <div class="shrink-0 flex items-center gap-3">
-                <template x-if="currentMainScreen === 'home'">
-                    <button @click="currentMainScreen = 'privacy'; currentPrivacyTab = 'privacy'" class="md:hidden px-3 py-2 bg-brand-950/60 border border-brand-500/30 rounded-xl text-xs text-white">Privacy</button>
-                </template>
-                <template x-if="currentMainScreen === 'privacy'">
-                    <button @click="currentMainScreen = 'home'" class="md:hidden px-3 py-2 bg-brand-600 rounded-xl text-xs text-white flex items-center gap-1">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Home
-                    </button>
-                </template>
-                <a href="https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm" target="_blank" class="relative group overflow-hidden rounded-xl p-[1px] inline-block font-semibold text-xs md:text-sm">
+            <div class="shrink-0 flex items-center gap-2">
+                <a href="https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm" target="_blank" class="relative group overflow-hidden rounded-xl p-[1px] hidden sm:inline-block font-semibold text-xs md:text-sm">
                     <span class="absolute inset-0 bg-gradient-to-r from-brand-500 to-indigo-500 animate-pulse"></span>
                     <span class="relative px-3 md:px-5 py-2.5 bg-[#090816] rounded-xl flex items-center gap-2 text-white transition-all duration-300 group-hover:bg-opacity-0">
                         <i data-lucide="chrome" class="w-4 h-4 text-brand-400 group-hover:text-white"></i>
-                        <span class="hidden sm:inline">Add to Chrome — Free</span>
-                        <span class="sm:hidden">Get Free</span>
+                        Add to Chrome — Free
                     </span>
                 </a>
+                <!-- Mobile hamburger (home screen) — plain x-show so it's in the static DOM and shows
+                     even before/if Alpine is slow to init (x-if templates render only after Alpine). -->
+                <button x-show="currentMainScreen === 'home'" @click="mobileMenu = !mobileMenu" aria-label="Menu" class="md:hidden w-9 h-9 flex items-center justify-center bg-brand-950/60 border border-brand-500/30 rounded-xl text-white shrink-0">
+                    <svg x-show="!mobileMenu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    <svg x-show="mobileMenu" style="display:none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <!-- Back button on the privacy screen -->
+                <button x-show="currentMainScreen === 'privacy'" style="display:none;" @click="currentMainScreen = 'home'" class="md:hidden px-3 py-2 bg-brand-600 rounded-xl text-xs text-white flex items-center gap-1 shrink-0">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Home
+                </button>
             </div>
         </nav>
+        <!-- Mobile dropdown menu -->
+        <div x-show="mobileMenu && currentMainScreen === 'home'" @click.outside="mobileMenu = false"
+             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+             class="md:hidden mt-2 glass-card rounded-2xl p-3 flex flex-col gap-1 text-sm font-medium text-slate-200 mobile-menu-panel shadow-2xl shadow-indigo-950/65" style="display:none;">
+            <a href="#features" @click="mobileMenu = false" class="px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">Features</a>
+            <a href="#panel-demo" @click="mobileMenu = false" class="px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">Extension UI</a>
+            <a href="#pricing" @click="mobileMenu = false" class="px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">Pricing</a>
+            <a href="#faq" @click="mobileMenu = false" class="px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">FAQ</a>
+            <button @click="currentMainScreen = 'privacy'; currentPrivacyTab = 'privacy'; mobileMenu = false" class="text-left px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors bg-transparent border-none text-slate-200 text-sm">Privacy Policy</button>
+        </div>
     </header>
 
     <!-- Main Content Container controlled by Alpine State -->
     <div x-show="currentMainScreen === 'home'">
         <!-- Hero Section -->
-        <section class="pt-32 pb-24 md:pt-44 md:pb-32 px-4 relative glow-bg">
+        <section class="pt-28 pb-16 md:pt-44 md:pb-32 px-4 relative glow-bg">
             <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
                 
                 <!-- Left Text Content -->
@@ -293,99 +417,39 @@
         </section>
 
         <!-- Features Section with Hover Animations and Lucide Icons (No Emojis) -->
-        <section id="features" class="py-24 px-4 max-w-7xl mx-auto">
+        <section id="features" class="py-14 md:py-24 px-4 max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">Capabilities</h2>
                 <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">One extension handles it all</h3>
                 <p class="text-slate-400 text-sm max-w-xl mx-auto">No configuration required. Installs and protects immediately.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Feature 1 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="ban" class="w-6 h-6"></i>
+            <!-- 3D coverflow carousel: the center card comes to the front, side cards rotate back on a
+                 curve. Auto-advances (pause on hover); tap a side card to bring it forward. Speed = the
+                 2200 (ms) in start(). -->
+            <!-- Outer = plain 2D clip layer (overflow-hidden + edge fade). Keeps the rotated side cards
+                 from ever poking past the viewport. Inner = the 3D perspective layer. Separating the two
+                 is what makes the clip actually contain the 3D-transformed cards. -->
+            <div x-data="coverflow()" x-init="start()" @mouseenter="paused=true" @mouseleave="paused=false"
+                 class="feature-coverflow-clip relative w-full max-w-full overflow-hidden mx-auto"
+                 style="-webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);">
+                <div class="feature-coverflow relative h-[340px] sm:h-[320px] w-full" style="perspective:1500px;">
+                    <template x-for="(f, idx) in items" :key="idx">
+                        <div @click="active = idx" :style="cardStyle(idx)"
+                             class="feature-card glass-card rounded-2xl p-6 flex flex-col w-[280px] max-w-[80vw] cursor-pointer absolute top-1/2 left-1/2">
+                            <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4">
+                                <i :data-lucide="f.icon" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-base text-white mb-2" x-text="f.title"></h4>
+                            <p class="text-xs text-slate-400 leading-relaxed" x-text="f.desc"></p>
                         </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Banner & Display Ads</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Removes ads from news sites, blogs, and every website you visit. Pages load faster and look cleaner instantly.</p>
-                    </div>
-                </div>
-                <!-- Feature 2 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="skip-forward" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Skip Video Ads Automatically</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Blocks and skips video ads on streaming and news sites — including pre-roll and mid-roll ads — without you doing anything.</p>
-                    </div>
-                </div>
-                <!-- Feature 3 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="x-circle" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Stop Pop-ups & Redirects</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Blocks pop-up windows, pop-unders, and malicious redirects that open new tabs or hijack your browser.</p>
-                    </div>
-                </div>
-                <!-- Feature 4 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="eye-off" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Trackers</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Stops analytics scripts and ad-exchange trackers from following you across the web. Strips tracking parameters from URLs.</p>
-                    </div>
-                </div>
-                <!-- Feature 5 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="shield-alert" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Malware & Phishing</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Known malware domains are blocked before the page loads using a live threat feed. You get a safety warning instead of a dangerous site.</p>
-                    </div>
-                </div>
-                <!-- Feature 6 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="key-round" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Protect Your Logins</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Detects when a login form sends your password over insecure HTTP or to a different domain — and warns you before credentials are exposed.</p>
-                    </div>
-                </div>
-                <!-- Feature 7 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="cpu" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Block Cryptominers</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Detects and blocks in-browser cryptocurrency mining scripts that silently drain your CPU and battery.</p>
-                    </div>
-                </div>
-                <!-- Feature 8 -->
-                <div class="glass-card rounded-2xl p-6 hover:border-brand-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 mb-4 transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-300">
-                            <i data-lucide="fingerprint" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-base text-white mb-2 group-hover:text-brand-300 transition-colors">Anti-Fingerprinting</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Adds noise to canvas rendering and masks plugin lists so sites can't build a unique fingerprint to track you across the web.</p>
-                    </div>
+                    </template>
                 </div>
             </div>
         </section>
 
         <!-- Pricing Section -->
-        <section id="pricing" class="py-24 px-4 max-w-7xl mx-auto relative">
+        <section id="pricing" class="py-14 md:py-24 px-4 max-w-7xl mx-auto relative">
             <div class="text-center mb-12">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">Transparent Plans</h2>
                 <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">Choose Your Plan</h3>
@@ -400,10 +464,20 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <!-- Mobile-only plan tabs: tap to slide the carousel to that plan. Hidden on desktop (md+),
+                 where the plans stay a 3-column grid. Sits below the month/year toggle. -->
+            <div class="md:hidden flex items-center gap-1.5 p-1.5 mb-6 rounded-2xl glass-card border border-brand-500/25 max-w-sm mx-auto">
+                <button @click="planTab='free'; expandedPlan='free'; scrollToPlan('free')" class="flex-1 px-2 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer" :class="planTab === 'free' ? 'bg-brand-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'">Free</button>
+                <button @click="planTab='pro'; expandedPlan='pro'; scrollToPlan('pro')" class="flex-1 px-2 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer" :class="planTab === 'pro' ? 'bg-brand-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'">Pro</button>
+                <button @click="planTab='ultimate'; expandedPlan='ultimate'; scrollToPlan('ultimate')" class="flex-1 px-2 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer" :class="planTab === 'ultimate' ? 'bg-brand-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'">Ultimate</button>
+            </div>
+
+            <!-- Mobile: horizontal snap-scroll carousel (one plan at a time). Desktop (md+): 3-col grid. -->
+            <div id="plan-scroller" @scroll.debounce.100ms="planTab = nearestPlan()"
+                 class="flex md:grid md:grid-cols-3 gap-6 md:gap-8 items-start overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none no-scrollbar pt-6 pb-4 md:pt-0 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
                 
                 <!-- Free Plan Card -->
-                <div @click="expandedPlan = 'free'" class="glass-card rounded-3xl p-8 flex flex-col justify-between cursor-pointer transition-all border-2" :class="expandedPlan === 'free' ? 'border-brand-500 shadow-xl shadow-brand-500/10 bg-brand-950/40' : 'border-transparent hover:border-brand-500/30'">
+                <div @click="expandedPlan = 'free'" data-plan="free" class="w-[85%] shrink-0 snap-center md:w-auto glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between cursor-pointer transition-all border-2" :class="expandedPlan === 'free' ? 'border-brand-500 shadow-xl shadow-brand-500/10 bg-brand-950/40' : 'border-transparent hover:border-brand-500/30'">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-sm font-bold text-slate-300 uppercase tracking-wider">Free</span>
@@ -412,7 +486,8 @@
                         <div class="text-4xl font-extrabold mb-1">$0 <span class="text-sm text-slate-400 font-normal">forever</span></div>
                         <div class="text-xl font-extrabold text-slate-300 mb-6">No credit card required</div>
                         
-                        <div class="space-y-2.5 pt-4 border-t border-indigo-950/80 text-xs text-slate-300" x-show="expandedPlan === 'free'" x-transition>
+                        <div class="grid transition-all duration-500 ease-out" :class="expandedPlan === 'free' ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'">
+                        <div class="overflow-hidden min-h-0 space-y-2.5 pt-4 border-t border-indigo-950/80 text-xs text-slate-300">
                             <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mb-2">Ad Blocking</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive ad blocking (EasyList)</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Video ad blocking (pre-roll & mid-roll)</div>
@@ -432,15 +507,15 @@
                             <div class="flex items-center gap-2 text-slate-500">— Insecure login form detection</div>
                             <div class="flex items-center gap-2 text-slate-500">— Anti-fingerprinting</div>
                             <div class="flex items-center gap-2 text-slate-500">— Cryptominer blocking</div>
-                        </div>
+                        </div></div>
                     </div>
-                    <div class="mt-8">
+                    <div class="mt-6 sm:mt-8">
                         <a href="https://chromewebstore.google.com/detail/alladsblock/genoghemojmpooajgdblfckhpekeadmm" target="_blank" class="w-full py-3.5 glass-card hover:bg-white/10 text-center font-bold rounded-xl transition-all inline-block text-sm">Add to Chrome — Free</a>
                     </div>
                 </div>
 
                 <!-- Pro Plan Card -->
-                <div @click="expandedPlan = 'pro'" class="rounded-3xl p-8 bg-gradient-to-b from-brand-900/60 to-indigo-950/80 border-2 cursor-pointer transition-all relative shadow-2xl shadow-brand-500/20" :class="expandedPlan === 'pro' ? 'border-brand-500 scale-[1.02]' : 'border-brand-500/50 hover:border-brand-500'">
+                <div @click="expandedPlan = 'pro'" data-plan="pro" class="w-[85%] shrink-0 snap-center md:w-auto rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-brand-900/60 to-indigo-950/80 border-2 cursor-pointer transition-all relative shadow-2xl shadow-brand-500/20" :class="expandedPlan === 'pro' ? 'border-brand-500 md:scale-[1.02]' : 'border-brand-500/50 hover:border-brand-500'">
                     <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">Most Popular</div>
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -454,7 +529,8 @@
                         <div class="text-sm font-bold text-emerald-400 mb-6" x-show="cycle === 'yearly'" x-text="'$21.48 billed yearly'">$21.48 billed yearly</div>
                         <div class="mb-6" x-show="cycle !== 'yearly'"></div>
                         
-                        <div class="space-y-2.5 pt-4 border-t border-brand-500/30 text-xs text-slate-200" x-show="expandedPlan === 'pro'" x-transition>
+                        <div class="grid transition-all duration-500 ease-out" :class="expandedPlan === 'pro' ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'">
+                        <div class="overflow-hidden min-h-0 space-y-2.5 pt-4 border-t border-brand-500/30 text-xs text-slate-200">
                             <div class="font-bold text-xs text-brand-400 uppercase tracking-wider mb-2">Ad Blocking</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive ad blocking (EasyList)</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Video ad blocking (pre-roll & mid-roll)</div>
@@ -476,15 +552,15 @@
                             <div class="flex items-center gap-2 text-emerald-400">✓ Brand-impersonation detection</div>
                             <div class="flex items-center gap-2 text-slate-500">— Clickjacking protection</div>
                             <div class="flex items-center gap-2 text-slate-500">— Cryptominer blocking</div>
-                        </div>
+                        </div></div>
                     </div>
-                    <div class="mt-8">
+                    <div class="mt-6 sm:mt-8">
                         <a :href="cycle === 'yearly' ? 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=pro&billing=yearly' : 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=pro'" target="_blank" class="w-full py-3.5 bg-brand-500 hover:bg-brand-400 text-white text-center font-bold rounded-xl transition-all shadow-lg inline-block text-sm">Get Pro</a>
                     </div>
                 </div>
 
                 <!-- Ultimate Plan Card -->
-                <div @click="expandedPlan = 'ultimate'" class="glass-card rounded-3xl p-8 flex flex-col justify-between cursor-pointer transition-all border-2 relative" :class="expandedPlan === 'ultimate' ? 'border-purple-500 shadow-xl shadow-purple-500/10 bg-purple-950/30 scale-[1.02]' : 'border-purple-500/30 hover:border-purple-500/60'">
+                <div @click="expandedPlan = 'ultimate'" data-plan="ultimate" class="w-[85%] shrink-0 snap-center md:w-auto glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between cursor-pointer transition-all border-2 relative" :class="expandedPlan === 'ultimate' ? 'border-purple-500 shadow-xl shadow-purple-500/10 bg-purple-950/30 md:scale-[1.02]' : 'border-purple-500/30 hover:border-purple-500/60'">
                     <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">Best Value</div>
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -498,7 +574,8 @@
                         <div class="text-sm font-bold text-emerald-400 mb-6" x-show="cycle === 'yearly'" x-text="'$43.08 billed yearly'">$43.08 billed yearly</div>
                         <div class="mb-6" x-show="cycle !== 'yearly'"></div>
                         
-                        <div class="space-y-2.5 pt-4 border-t border-purple-500/30 text-xs text-slate-200" x-show="expandedPlan === 'ultimate'" x-transition>
+                        <div class="grid transition-all duration-500 ease-out" :class="expandedPlan === 'ultimate' ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'">
+                        <div class="overflow-hidden min-h-0 space-y-2.5 pt-4 border-t border-purple-500/30 text-xs text-slate-200">
                             <div class="font-bold text-xs text-purple-400 uppercase tracking-wider mb-2">Ad Blocking</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Comprehensive ad blocking (EasyList)</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Video ad blocking (pre-roll & mid-roll)</div>
@@ -526,9 +603,9 @@
                             <div class="flex items-center gap-2 text-emerald-400">✓ Tab-napping protection</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ DNS rebinding protection</div>
                             <div class="flex items-center gap-2 text-emerald-400">✓ Tech-support scam detection</div>
-                        </div>
+                        </div></div>
                     </div>
-                    <div class="mt-8">
+                    <div class="mt-6 sm:mt-8">
                         <a :href="cycle === 'yearly' ? 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=ultimate&billing=yearly' : 'chrome-extension://genoghemojmpooajgdblfckhpekeadmm/checkout.html?plan=ultimate'" target="_blank" class="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white text-center font-bold rounded-xl transition-all shadow-lg inline-block text-sm">Get Ultimate</a>
                     </div>
                 </div>
@@ -537,7 +614,7 @@
         </section>
 
         <!-- FAQ / Q&A Section with Accordion Reveal Animations -->
-        <section id="faq" class="py-24 px-4 max-w-4xl mx-auto border-t border-indigo-950/60" x-data="{ openFaq: null }">
+        <section id="faq" class="py-14 md:py-24 px-4 max-w-4xl mx-auto border-t border-indigo-950/60" x-data="{ openFaq: null }">
             <div class="text-center mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">FAQ</h2>
                 <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Everything you want to know before installing</h3>
@@ -608,7 +685,7 @@
     </div>
 
     <!-- Full Dedicated Privacy Policy Screen View (Navigated to via Privacy Policy link/tab) -->
-    <main x-show="currentMainScreen === 'privacy'" class="max-w-5xl mx-auto px-4 py-32 w-full flex-grow" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-3" x-transition:enter-end="opacity-100 translate-y-0">
+    <main x-show="currentMainScreen === 'privacy'" class="max-w-5xl mx-auto px-4 py-24 md:py-32 w-full flex-grow" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-3" x-transition:enter-end="opacity-100 translate-y-0">
         <div class="text-center mb-10">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-brand-300 text-xs font-semibold mb-4">
                 <i data-lucide="scale" class="w-4 h-4 text-brand-400"></i> Legal & Compliance Center
