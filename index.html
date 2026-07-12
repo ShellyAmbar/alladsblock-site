@@ -24,6 +24,23 @@
     <meta name="twitter:title" content="AllAdsBlock — Free Ad, Tracker & Malware Blocker for Chrome">
     <meta name="twitter:description" content="Block every ad, pop-up, video ad and tracker — plus malware & phishing sites. Free, private, Manifest V3.">
     <meta name="twitter:image" content="https://shellyambar.github.io/alladsblock-site/icon128.png">
+    <script>
+        function lockOrientation() {
+            // Check if the Screen Orientation API is supported
+            if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait')
+                .then(() => {
+                console.log('Screen successfully locked to portrait mode.');
+                })
+                .catch((error) => {
+                console.warn('Orientation lock failed: ', error);
+                });
+            }
+        }
+
+        // Trigger the lock on page load or user interaction
+        window.addEventListener('load', lockOrientation);
+</script>
     <!-- Structured data -->
     <script type="application/ld+json">
     {
